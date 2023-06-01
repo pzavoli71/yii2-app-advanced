@@ -76,7 +76,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "creation"
+            "dev-master": "master"
         }
     }    
 }
