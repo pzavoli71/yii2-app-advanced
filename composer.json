@@ -1,16 +1,13 @@
 {
-    "name": "yiisoft/yii2-app-advanced",
-    "description": "Yii 2 Advanced Project Template",
+    "name": "pzavoli71/yii2-app-advanced",
+    "description": "Yii 2 Advanced Project Template with permissions",
     "keywords": ["yii2", "framework", "advanced", "project template"],
     "homepage": "https://www.yiiframework.com/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
-        "forum": "https://www.yiiframework.com/forum/",
-        "wiki": "https://www.yiiframework.com/wiki/",
-        "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/yii2"
+        "issues": "https://github.com/pzavoli71/sport/issues?state=open",
+        "source": "https://github.com/pzavoli71/sport"
     },
     "minimum-stability": "stable",
     "require": {
@@ -76,5 +73,10 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ]
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "creation"
+        }
+    }    
 }
