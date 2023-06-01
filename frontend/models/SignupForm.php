@@ -49,6 +49,7 @@ class SignupForm extends Model
             return null;
         }
         
+        $transaction = \Yii::$app->db->beginTransaction();
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
@@ -56,7 +57,12 @@ class SignupForm extends Model
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() && $this->sendEmail($user);
+        if ( $user->save() && $this->sendEmail($user)) {
+            $transaction->commit();
+            return true;
+        }
+        $transaction->rollback();
+        return false;
     }
 
     /**

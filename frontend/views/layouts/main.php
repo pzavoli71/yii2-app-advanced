@@ -36,13 +36,15 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        //['label' => 'Obiettivi', 'url' => ['/obiettivo/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        ['label' => 'Home', 'url' => ['/site/index'],'forall'=>'true'],
+        ['label' => 'About', 'url' => ['/site/about'],'forall'=>'true'],
+        ['label' => 'Contact', 'url' => ['/site/contact'],'forall'=>'true'],
     ];
+    $menuItems = \frontend\controllers\BaseController::menu($menuItems);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+    } else {
+        $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/abilitazione/profilo/view','IdProfilo' => Yii::$app->user->identity->profilo->IdProfilo]];        
     }
 
     echo Nav::widget([

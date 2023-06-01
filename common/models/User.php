@@ -7,7 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
 use yii\base\Event;
-use common\models\soggetti\Soggetto;
+use common\models\abilitazione\Profilo;
 use common\models\abilitazione\zutgr;
 use common\models\abilitazione\ztrans;
 
@@ -232,9 +232,9 @@ class User extends BaseModel implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getSoggetto()
+    public function getProfilo()
     {
-        return $this->hasOne(Soggetto::class, ['id' => 'id']);
+        return $this->hasOne(Profilo::class, ['id' => 'id']);
     }
 
     /**
@@ -266,20 +266,22 @@ class User extends BaseModel implements IdentityInterface
             return true;
         
         // Aggiungo anche la tabella Soggetto
-        $soggetto = new Soggetto();
+        $soggetto = new Profilo();
         $soggetto->id = $this->id;
-        $soggetto->NomeSoggetto = $this->username;
-        $soggetto->EmailSogg = $this->email;
+        $soggetto->Nome = $this->username;
+        //$soggetto->EmailSogg = $this->email;
         $soggetto->utente = $this->username;
-
+        $soggetto->save();
+        
         // Aggiungo anche il gruppo per questo utente
         $zutgr = new zutgr();
         $zutgr->id = $this->id;
         $zutgr->idgruppo = 1;
         
-        if ( $zutgr->save())
-            return true;
-        return false;
+        if ( !$zutgr->save()) {
+            throw new UserException("Errore in inserimento gruppo dell'utente. Avvisare il responsabile!");
+        }
+        return true;
     }
     
 }

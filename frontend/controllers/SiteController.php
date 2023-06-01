@@ -75,7 +75,7 @@ class SiteController extends Controller
      */
     public function actionHome()
     {        
-        $this->layout = "mainform";
+        //$this->layout = "mainform";
         if ( !empty(Yii::$app->user->identity)) {
             $gruppi = Yii::$app->user->identity->getZgruppi();
             Yii::$app->getSession()['gruppi'] = $gruppi;
@@ -96,7 +96,7 @@ class SiteController extends Controller
         /*if ( Yii::$app->getSession()->has('gruppi')) {
             $gruppi = Yii::$app->getSession()->get('gruppi');
         } else {*/
-        $this->layout = "maintabs";
+        //$this->layout = "maintabs";
             if ( !empty(Yii::$app->user->identity)) {
                 $gruppi = Yii::$app->user->identity->getZgruppi();
                 Yii::$app->getSession()['gruppi'] = $gruppi;
@@ -151,7 +151,6 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
-        $this->layout = "mainform";
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -175,7 +174,6 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        $this->layout = "mainform";
         return $this->render('about');
     }
 
@@ -186,7 +184,6 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
-        //$this->layout = "mainform";        
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ( $model->signup()) {        
