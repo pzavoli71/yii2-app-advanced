@@ -77,6 +77,54 @@ class BaseController  extends Controller{
         return true;
     }
     
+    /**
+     * Funzione che crea un link senza finestra, controllando i permessi.
+     * @param type $action Nome dell'azione del tipo controller/action
+     * @param type $permesso AIRVLC
+     */
+    public static function link($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary') {
+        $trovato = false;
+        if ( !empty($windowparams['freetoall'])) {
+            $trovato = true;
+        } else {
+            if ( Yii::$app->session != null ) {
+                $gruppi = Yii::$app->session['gruppi'];
+                if ( $gruppi != null) {
+                    //foreach ($gruppi as $key => $value) {
+                    foreach ($gruppi as $value) {
+                        if ( $value['nometrans'] == $action) {
+                            $trovato = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        $url = '';
+        $fa = '';
+        if (str_contains($text, '|fa-')) {
+            $pos = strpos($text, '|fa-');
+            $fa = substr($text,$pos + 1);
+            $text = substr($text,0,$pos);
+        }
+        if ( $trovato) {
+            $params = array_merge([$action],$params);
+            $p = '{';
+            if ( !empty($windowparams['windowwidth'])) {
+                $p .= "width:" . $windowparams['windowwidth'] . ",";
+            }
+            $p .= '}';
+            $titoloform = "Inserisci i parametri";
+            if ( !empty($windowparams['windowtitle'])) {
+                $titoloform = $windowparams['windowtitle'];
+                $titoloform = str_replace("'","\'",$titoloform);
+            }
+            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass]);
+        } else {
+            $url = ''; //Html::a($text,null,['title'=>$title]);
+        }
+        return $url;
+    }
     
     /**
      * 
