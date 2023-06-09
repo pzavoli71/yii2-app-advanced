@@ -340,6 +340,7 @@ function AppGlob() {
 
         // Apre una form con i parametri impostati
         this.apriForm = function(obj, href, callback, windowparam, title = "Inserisci i parametri") {
+            Tabs = window['Tabs'] || null;            		
             if (!window.formids || window.formids === null || window.formids == NaN) {
                     window.formids = 0;
             }
@@ -354,7 +355,7 @@ function AppGlob() {
             s += "<iframe class='frame-form'></iframe>";
             s += "</div>";
             // Cerco tab-container
-            $container = Tabs.findContainer(obj);
+            $container = Tabs && Tabs !== null && Tabs !== 'undefined'?Tabs.findContainer(obj):null;
             if ($container === null)
                     $('body').append(s);
             else
