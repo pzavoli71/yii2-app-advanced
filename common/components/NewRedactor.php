@@ -12,7 +12,7 @@ class NewRedactor extends Redactor {
     protected function registerScript()
     {   
         parent::registerScript();
-        $this->getView()->registerJs("observer.observe(document.querySelector('.redactor-box'))"); //#{$this->options['id']}'));");
+        $this->getView()->registerJs("if (typeof observer !== 'undefined') observer.observe(document.querySelector('.redactor-box'))");
     }
 
 }
