@@ -218,7 +218,9 @@ td.relazione.closed {
     .tabLista:not([class*=nomobile]) th, .tabLista tr.th {
         display:none;
     }
-
+    .tabLista tr.nomobile {
+        display:none !important;
+    }
     .tabLista:not([class*=nomobile]) .headcol {
         display:inline-block;
         font-weight: bold;
@@ -468,4 +470,11 @@ a {
     .container-sm, .container {
         max-width: none !important;
     }
+}
+.btn-link {
+    color: black;
+    padding:3px 4px 3px 4px;   
+}
+.gm-style-iw-d > div {
+    width:fit-content;
 }
