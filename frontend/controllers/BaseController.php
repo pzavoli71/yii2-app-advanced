@@ -47,16 +47,23 @@ class BaseController  extends Controller{
     // In fase di rendering invio il parametro DatiCombo alle views
     public function render($view, $params = [])
     {
-        $combo = [];
-        //$pars['model'] = $params['model'];     
-        
+        $combo = [];        
         if ( !empty($this->DatiCombo)) {
             foreach ($this->DatiCombo as $key => $value) {
                 $combo[$key] = $value;
             }
         }
-        //$pars['combo'] = $combo; // $this->DatiCombo;
         $params['combo'] = $combo;
+        
+        // Aggiungo anche i parametri che mi sono stati inviati dalla maschera
+        $maskparam = [];        
+        if ( !empty($this->ParametriMask)) {
+            foreach ($this->ParametriMask as $key => $value) {
+                $maskparam[$key] = $value;
+            }
+        }
+        $params['parametri'] = $maskparam;
+        
         $content = $this->getView()->render($view, $params, $this);
         return $this->renderContent($content);
     }
@@ -70,12 +77,19 @@ class BaseController  extends Controller{
     // Controllo se c'è una sessione attiva, altrimenti errore
     public function beforeAction($action): bool {
         if (!parent::beforeAction($action)) { return false; }
+        $this->riempiParametriMask();        
         if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->profilo->IdProfilo)) {
             //$this->layout = 'mainform';
             throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
         }
         return true;
     }
+
+    private function riempiParametriMask() {
+        foreach ($this->request->queryParams as $key => $value) {
+            $this->addParametroMask($key, $value);
+        }        
+    }    
     
     /**
      * Funzione che crea un link senza finestra, controllando i permessi.
