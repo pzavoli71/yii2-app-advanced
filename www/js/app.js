@@ -384,14 +384,15 @@ function AppGlob() {
                             $form.find('iframe.frame-form').attr('src',href);
                     },
                     beforeClose: function() {
-                            if ( callback && callback !== 'undefined') {
-                                if ( typeof callback === 'string') {
-                                    eval(callback);
-                                } else if ( typeof callback === 'function' )
-                                    callback();
-                            }
-                            $(this).dialog( "destroy" );		
-                            $(this).remove();
+	                    $form.find('iframe.frame-form').attr('src','');
+			    $(this).dialog( "destroy" );		
+			    $(this).remove();
+			    if ( callback && callback !== 'undefined') {
+				if ( typeof callback === 'string') {
+				    eval(callback);
+				} else if ( typeof callback === 'function' )
+				    callback();
+			    }
                     }
             });
             return false;
