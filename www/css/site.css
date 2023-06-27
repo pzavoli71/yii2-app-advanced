@@ -478,3 +478,8 @@ a {
 .gm-style-iw-d > div {
     width:fit-content;
 }
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+    background: #6693bc !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+} 
