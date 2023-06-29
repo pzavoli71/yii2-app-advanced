@@ -38,10 +38,18 @@ class BaseController  extends Controller{
                     'autoGroup' => true,
                     'removeMaskOnSubmit' => true,
                     ]];
+    
+    // Qui vengono mantenuti i valori generati dal combo in maschera    
     public $DatiCombo = [];
+
+    // Qui vengono mantenuti i parametri inviati dall'utente
+    public $ParametriMask = [];
     
     protected function addCombo($name, $items) {
         $this->DatiCombo[$name] = $items;
+    }
+    protected function addParametroMask($name, $value) {
+        $this->ParametriMask[$name] = $value;
     }
     
     // In fase di rendering invio il parametro DatiCombo alle views
@@ -116,10 +124,18 @@ class BaseController  extends Controller{
         }
         $url = '';
         $fa = '';
-        if (str_contains($text, '|fa-')) {
-            $pos = strpos($text, '|fa-');
-            $fa = substr($text,$pos + 1);
+        if (str_contains($text, '|fa-') || str_contains($text, ' fa-')) {
+            if (str_contains($text, '|fa-') )
+                $pos = strpos($text, '|fa-');
+            else
+                $pos = strpos($text, '|fa');
+            if (str_contains($text, '|far') || str_contains($text, '|fas'))
+                $fa = substr($text,$pos + 1);
+            else
+                $fa = 'fas ' . substr($text,$pos + 1);
             $text = substr($text,0,$pos);
+            if (strlen($text) > 0)
+                $text = '&#xA0;' . $text;
         }
         if ( $trovato) {
             $params = array_merge([$action],$params);
@@ -133,7 +149,7 @@ class BaseController  extends Controller{
                 $titoloform = $windowparams['windowtitle'];
                 $titoloform = str_replace("'","\'",$titoloform);
             }
-            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass]);
+            $url = Html::a(($fa != ''?"<span class='" . $fa . "'></span>":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass]);
         } else {
             $url = ''; //Html::a($text,null,['title'=>$title]);
         }
@@ -147,24 +163,36 @@ class BaseController  extends Controller{
      */
     public static function linkwin($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary') {
         $trovato = false;
-        if ( Yii::$app->session != null ) {
-            $gruppi = Yii::$app->session['gruppi'];
-            if ( $gruppi != null) {
-                //foreach ($gruppi as $key => $value) {
-                foreach ($gruppi as $value) {
-                    if ( $value['nometrans'] == $action) {
-                        $trovato = true;
-                        break;
+        if ( !empty($windowparams['freetoall'])) {
+            $trovato = true;
+        } else {
+            if ( Yii::$app->session != null ) {
+                $gruppi = Yii::$app->session['gruppi'];
+                if ( $gruppi != null) {
+                    //foreach ($gruppi as $key => $value) {
+                    foreach ($gruppi as $value) {
+                        if ( $value['nometrans'] == $action) {
+                            $trovato = true;
+                            break;
+                        }
                     }
                 }
             }
         }
         $url = '';
         $fa = '';
-        if (str_contains($text, '|fa-')) {
-            $pos = strpos($text, '|fa-');
-            $fa = substr($text,$pos + 1);
+        if (str_contains($text, '|fa-') || str_contains($text, ' fa-')) {
+            if (str_contains($text, '|fa-') )
+                $pos = strpos($text, '|fa-');
+            else
+                $pos = strpos($text, '|fa');
+            if (str_contains($text, '|far') || str_contains($text, '|fas'))
+                $fa = substr($text,$pos + 1);
+            else
+                $fa = 'fas ' . substr($text,$pos + 1);
             $text = substr($text,0,$pos);
+            if (strlen($text) > 0)
+                $text = '&#xA0;' . $text;
         }
         if ( $trovato) {
             $params = array_merge([$action],$params);
@@ -178,7 +206,7 @@ class BaseController  extends Controller{
                 $titoloform = $windowparams['windowtitle'];
                 $titoloform = str_replace("'","\'",$titoloform);
             }
-            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);
+            $url = Html::a(($fa != ''?"<span class='" . $fa . "'></span>":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);
         } else {
             $url = ''; //Html::a($text,null,['title'=>$title]);
         }
