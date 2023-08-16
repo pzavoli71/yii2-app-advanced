@@ -12,6 +12,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\imagine\Image;  
 use Imagine\Image\Box;  
+use yii\base\UserException;
 
 /**
  * Description of BaseModel
@@ -56,6 +57,23 @@ class BaseModel extends \yii\db\ActiveRecord {
             return $params;
           }
           
+        public function load($data, $formName = null)
+        {
+            $scope = $formName === null ? $this->formName() : $formName;
+            if ($scope === '' && !empty($data)) {
+                $this->setAttributes($data);
+                if ( $this->hasErrors())
+                    return false;
+                return true;
+            } elseif (isset($data[$scope])) {
+                $this->setAttributes($data[$scope]);
+                if ( $this->hasErrors())
+                    return false;
+                return true;
+            }
+            return false;
+        }
+          
           protected function convertiNumero($numero) {
                 $conv = str_replace('.', '', $numero);
                 $conv = str_replace(',', '.', $conv);  
@@ -92,7 +110,7 @@ class BaseModel extends \yii\db\ActiveRecord {
               $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
               $conv = \DateTime::createFromFormat($format, $valore);
               if (!$conv) 
-                  throw new \UnexpectedValueException("Could not parse the date: " . $valore);
+                  throw new UserException("Could not parse the date: " . $valore);
               return $conv;
           }
           
@@ -102,12 +120,13 @@ class BaseModel extends \yii\db\ActiveRecord {
               $format = \common\config\db\mysql\ColumnSchema::$saveDateFormat;
               $conv = \DateTime::createFromFormat($format, $valore);
               if (!$conv) 
-                  throw new \UnexpectedValueException("Could not parse the date: " . $valore);
+                  throw new UserException("Could not parse the date: " . $valore);
               return $conv;
           }                    
           
           public function setAttributes($values, $safeOnly = true) {
               parent::setAttributes($values, $safeOnly);
+              $validated = true;
             foreach ($this->number_columns as $nomecol) {
                 if ( $this->attributes[$nomecol] != null) {
                     $val = $this->convertiNumero($this->attributes[$nomecol]);
@@ -126,9 +145,19 @@ class BaseModel extends \yii\db\ActiveRecord {
             }
             
             foreach ($this->date_columns as $nomecol) {
-                $val = $this->convertiStringToDate($this->attributes[$nomecol]);
-                $this->setAttribute($nomecol, $val);
+                try {
+                    $oldval = $this->attributes[$nomecol];
+                    $val = $this->convertiStringToDate($this->attributes[$nomecol]);                
+                    //$this->setAttribute($nomecol, $val);
+                } catch(UserException $e)  {
+                    $this->addError($nomecol, "Errore in validazione data");
+                    $this->setAttribute($nomecol, $oldval);
+                    $validated = false;
+                    //$this->errors[$nomecol][] = 'Errore in conversione data';
+                }
             }              
+            if ( !$validated)
+                return false;
           }
           
           public function beforeSave($insert) {
@@ -143,7 +172,7 @@ class BaseModel extends \yii\db\ActiveRecord {
                     if ($max == null )
                         $max = 0;
                     if ( $max < 0) 
-                        throw new \UnexpectedValueException("Impossibile caricare il valore di " . $nomecol);
+                        throw new UserException("Impossibile caricare il valore di " . $nomecol);
                     $max++;
                     $this[$nomecol] = $max;
                 }
