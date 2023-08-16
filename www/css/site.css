@@ -218,9 +218,7 @@ td.relazione.closed {
     .tabLista:not([class*=nomobile]) th, .tabLista tr.th {
         display:none;
     }
-    .tabLista tr.nomobile {
-        display:none !important;
-    }
+
     .tabLista:not([class*=nomobile]) .headcol {
         display:inline-block;
         font-weight: bold;
@@ -474,11 +472,34 @@ a {
     color: black;
     padding:3px 4px 3px 4px;   
 }
-.gm-style-iw-d > div {
-    width:fit-content;
-}
 .ui-menu-item .ui-menu-item-wrapper.ui-state-active {
     background: #6693bc !important;
     font-weight: bold !important;
     color: #ffffff !important;
 } 
+.tab {
+    display:table;
+    width:max-content;
+    border-collapse:collapse;
+}
+.tablerow {
+    display:table-row;
+    border: 1px solid #ebebeb;
+}
+.tablecell {
+    display:table-cell;
+    width:auto;
+    padding:5px;
+}
+.has-error > .input-group {
+    border: 1px solid red;
+}
+/*.ui-state-hover,
+.ui-state-active,
+.ui-menu-item.ui-state-focus,
+.ui-state-focus {
+  text-decoration: none;
+  color: #262626;
+  background-color: gray !important;
+  cursor: pointer;
+}*/
