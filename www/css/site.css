@@ -494,6 +494,14 @@ a {
 .has-error > .input-group {
     border: 1px solid red;
 }
+form label {
+    font-size:90%;
+    font-weight:bold;
+}
+.breadcrumb-item.active {
+    font-weight:bold;
+    font-size:110%;
+}
 /*.ui-state-hover,
 .ui-state-active,
 .ui-menu-item.ui-state-focus,
