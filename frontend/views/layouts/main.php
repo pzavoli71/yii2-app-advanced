@@ -11,6 +11,15 @@ use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
 AppAsset::register($this);
+
+//Fix for closing icon (x) not showing up in dialog
+$this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
+                var bootstrapButton = $.fn.button.noConflict(); 
+                $.fn.bootstrapBtn = bootstrapButton;
+            }",
+            \yii\web\View::POS_READY
+);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -18,9 +27,17 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
     <?php $this->registerCsrfMetaTags() ?>
+
     <title><?= Html::encode($this->title) ?></title>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/>    
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"/> 
+
+<?php $this->registerJsFile(
+    '@web/js/app.js',
+    ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
+    );?>
+    
     <?php $this->head() ?>
 </head>
 <body class="d-flex flex-column h-100">
