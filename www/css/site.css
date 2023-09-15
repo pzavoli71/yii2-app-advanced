@@ -150,6 +150,10 @@ td.relazione.closed {
 	padding-top:0px !important;
 	padding-bottom:0px !important;
 } 
+.tabLista th {
+    background-color: #e5e5e5;
+    text-align: center;
+} 
 
 .tabListas td:empty,.tabListas th:empty  {
 	min-height:4em;
@@ -462,7 +466,7 @@ a {
     width:95%;
     /*max-width:800px;*/
     max-width: 99%;
-    box-shadow: 0px 0px 17px 0px #adadad;  	
+    box-shadow: 0px 0px 17px 0px #adadad;    
 }
 @media (min-width: 576px) {
     .container-sm, .container {
@@ -495,6 +499,7 @@ a {
 .has-error > .input-group {
     border: 1px solid red;
 }
+
 form label {
     font-size:90%;
     font-weight:bold;
@@ -503,15 +508,91 @@ form label {
     font-weight:bold;
     font-size:110%;
 }
-/*.ui-state-hover,
-.ui-state-active,
-.ui-menu-item.ui-state-focus,
-.ui-state-focus {
-  text-decoration: none;
-  color: #262626;
-  background-color: gray !important;
-  cursor: pointer;
-}*/
+
+
+/* Gestione dei panini */
+.tabledisplay { 
+    display: table; 
+    width:100%;
+    border-radius:3px;padding:5px;
+}
+.tr { 
+    display: table-row; 
+}
+.td { 
+    display: table-cell; 
+    padding:10px;
+    border-bottom: 1px solid #d5d5d5;
+    border-radius: 0;    
+}    
+.contenitore {
+    min-height:42px;
+    position:relative;
+    margin-bottom:10px;
+    border:1px solid #d9d9d9;
+    padding: 5px;
+}
+.contenitorebottoni {
+    box-shadow: 2px 2px 6px 0px #bdb8b8;
+    border:1px solid #d5d5d5; 
+    padding:2px;
+    display:inline-block;
+    position:absolute; 
+    right:5px;
+    top:5px;
+    background-color:white;
+}
+.contenitore.titolo {
+    background-color: #e9e9e9;
+    border: 1px solid #c1c1c1;
+    padding: 5px;
+}
+.panino {
+    padding:6px;
+    display:none;
+}
+.contenitorebottoni .btn-link {
+    position:relative;
+}
+.testovocemenu {
+    display:none;
+}
+.vocimenu {
+    text-align:right;
+}
+@media only screen and (max-width: 992px) {
+    .contenitorebottoni h2, p {
+        text-align:center;
+    }
+    .contenitorebottoni .btn-link {
+        padding:3px 4px 3px 4px;   
+        font-size:20px;
+        line-height: 20px;
+        text-decoration: none;        
+    }    
+    .contenitore {
+        min-height:47px;
+        position:relative;
+    }
+    .panino {
+        display:block;
+        position:relative;
+        text-align:right;
+        border: 1px solid #c1bfbf;
+        background-color: #ebeaea;        
+        cursor:pointer;
+    }
+    .panino + .vocimenu {
+        display:none;
+    }
+    .testovocemenu {
+        display:block;
+        padding: 0px 4px;        
+    }    
+    .testovocemenu + i {
+        display:none;
+    }
+}
 
 /* Tabs */
 .cis-tab-gen {
