@@ -189,14 +189,16 @@ td.relazione.closed {
         display:block;
         border:0px;
     }
-    .tabLista:not([class*=nomobile]) td.tdbottoni {
-        background-color:white !important;
-    }
     .tabLista:not([class*=nomobile]) td:nth-child(even) {
             background: #FFF;
     }
     .tabLista:not([class*=nomobile]) td:nth-child(odd) {
-        background: #fdf2f2;        
+        background: #f9f9f9;        
+    }
+    .tabLista:not([class*=nomobile]) td.tdbottoni {
+        background-color:white !important;
+        border:1px solid #EEEEEE;
+        box-shadow: inset 0px 0px 16px 1px #DDDDDD;
     }
     
     .tabLista:not([class*=nomobile]) tr:not([id^=RigaRel]) {
