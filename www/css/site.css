@@ -204,7 +204,7 @@ td.relazione.closed {
         border: 1px solid #cbc7c7;
         padding: 5px;
         width: 99%;
-        margin: 10px 0 1px 0;
+        margin: 0px 0 1px 0;
         box-shadow: 0px 0px 12px 0px #bdb4b4;            
     }
     .tabLista:not([class*=nomobile]) tr[id^=RigaRel] {
