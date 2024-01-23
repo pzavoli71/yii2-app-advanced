@@ -8,6 +8,7 @@
 namespace common\config\db\mysql;
 
 use yii\helpers\StringHelper;
+use yii\db\mysql\ColumnSchemaBuilder;
 /**
  * Description of ColumnSchema
  *
