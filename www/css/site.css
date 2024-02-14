@@ -141,9 +141,10 @@ td.relazione.closed {
 	min-height:30px;	
 }
 .tabLista td.closed, .tabLista .td.closed {
-	height:0px;	
-	padding-top:0px !important;
-	padding-bottom:0px !important;
+    height:0px;	
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+    border-bottom: 1px solid rgb(255 255 255);        
 }
 
 .tabLista td:empty{
@@ -173,11 +174,6 @@ td.relazione.closed {
 }
 .tabListas td {
     display:block;
-}
-
-.tabLista td {
-    border-left: 1px solid rgb(236, 236, 236);
-    border-bottom: 1px solid rgb(236, 236, 236);
 }
 
 @media only screen and (max-width: 768px) {
@@ -226,10 +222,16 @@ td.relazione.closed {
     }
 
     .tabLista:not([class*=nomobile]) .headcol {
-        display:inline-block;
+        display: inline-block;
         font-weight: bold;
-        margin-right:15px;
-        width:30%;
+        margin-right: 15px;
+        width: 30%;
+        /*background-color: white;*/ /*#e5e9fd;*/
+        background-color: antiquewhite;
+        padding: 5px;
+        border-radius: 2px;
+        border: 1px solid #d9d9d9;        
+        color: black;
     }
     .tabLista:not([class*=nomobile]) td img {
         max-width:90%;
@@ -261,8 +263,12 @@ td.open, .td.open  {
 }
 .tabLista td, .tabLista .td {
     line-height: 1.5em;
-    padding: 5px;
+    /*padding: 5px;*/
+    border-left: 1px solid rgb(236, 236, 236);
+    border-bottom: 1px solid rgb(167 167 167);
+    padding:10px;
 }
+
 td.closed div, .td.closed div {
     display: none;
 }
