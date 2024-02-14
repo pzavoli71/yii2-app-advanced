@@ -53,7 +53,7 @@ function AppGlob() {
 	this.eseguiComando = function(href, nomecomando, chiave, parametri, richiestaComando, callback) {
             var dati = {}; //parametri;
             if ( typeof richiestaComando == 'function') {
-                    if ( !richiestaComando(nomecomando, chiave, dati, href, callback)) {
+                    if ( !richiestaComando(nomecomando, chiave, dati, href, callback, parametri)) {
                             //alert('Comando annullato');
                             return;
                     }
@@ -77,7 +77,7 @@ function AppGlob() {
                     if (data.status === "success") {
                     }
                     if ( typeof callback == 'function')
-                            callback(nomecomando, chiave, data, href,callback);
+                            callback(nomecomando, chiave, data, href,callback, parametri);
                     console.log(data.search);
                 },
                 complete: function () {
@@ -87,7 +87,7 @@ function AppGlob() {
                     dati = {};
                     dati.error = 'Errore nell\'elaborazione: ' + errorThrown;
                     if ( typeof callback == 'function')
-                            callback(nomecomando, chiave, dati, href,callback);
+                            callback(nomecomando, chiave, dati, href,callback, parametri);
                 }           
              });
         };
@@ -182,7 +182,7 @@ function AppGlob() {
 		  			idtablista = idtablista.replace(/divRel_/g,'tabLista');
 		  	}		  	
 		  	if ( idtablista != undefined && idtablista != '') {
-		  		$tablista = $odivRelaz.find('.divLista > .tabLista');
+		  		$tablista = $odivRelaz.find('.divLista > .tabLista').first();
 		  		$tablista.attr('id',idtablista);
 		  	}
 		  	
@@ -340,7 +340,6 @@ function AppGlob() {
 
         // Apre una form con i parametri impostati
         this.apriForm = function(obj, href, callback, windowparam, title = "Inserisci i parametri") {
-            Tabs = window['Tabs'] || null;            		
             if (!window.formids || window.formids === null || window.formids == NaN) {
                     window.formids = 0;
             }
@@ -355,7 +354,7 @@ function AppGlob() {
             s += "<iframe class='frame-form'></iframe>";
             s += "</div>";
             // Cerco tab-container
-            $container = Tabs && Tabs !== null && Tabs !== 'undefined'?Tabs.findContainer(obj):null;
+            $container = Tabs.findContainer(obj);
             if ($container === null)
                     $('body').append(s);
             else
@@ -384,15 +383,14 @@ function AppGlob() {
                             $form.find('iframe.frame-form').attr('src',href);
                     },
                     beforeClose: function() {
-	                    $form.find('iframe.frame-form').attr('src','');
-			    $(this).dialog( "destroy" );		
-			    $(this).remove();
-			    if ( callback && callback !== 'undefined') {
-				if ( typeof callback === 'string') {
-				    eval(callback);
-				} else if ( typeof callback === 'function' )
-				    callback();
-			    }
+                            if ( callback && callback !== 'undefined') {
+                                if ( typeof callback === 'string') {
+                                    eval(callback);
+                                } else if ( typeof callback === 'function' )
+                                    callback();
+                            }
+                            $(this).dialog( "destroy" );		
+                            $(this).remove();
                     }
             });
             return false;
