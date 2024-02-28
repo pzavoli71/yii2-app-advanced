@@ -7,6 +7,7 @@ main {
     padding:  5px;	
     background-color:white;
     width:99%;
+    padding-bottom: 0px;
 }
 
 main > .container, main > .container-fluid
@@ -227,10 +228,10 @@ td.relazione.closed {
         margin-right: 15px;
         width: 30%;
         /*background-color: white;*/ /*#e5e9fd;*/
-        background-color: antiquewhite;
+        /*background-color: antiquewhite;*/
         padding: 5px;
         border-radius: 2px;
-        border: 1px solid #d9d9d9;        
+        /*border: 1px solid #d9d9d9;        */
         color: black;
     }
     .tabLista:not([class*=nomobile]) td img {
@@ -243,6 +244,10 @@ td.relazione.closed {
     .imgdoc {
         max-width:95%;
     }
+    .ui-dialog {
+        left: 1.5% !important;
+        width: 97% !important;
+    }    
 }
 
 .imgdoc {
@@ -488,4 +493,25 @@ a {
 }
 .tabLista th {
     background-color:#dddddd;
+}
+
+th.ultagg, th.utente, td.ultagg, td.utente{
+    font-style: italic;
+    font-size: small;
+    color: gray;
+}
+
+span.ultagg {
+    font-style: italic;
+    font-size: small;
+    color: gray;
+    border-top: 1px solid #c7c7c7;
+    padding-top: 3px;
+}
+span.ultagg > b {
+    background-color: #f7f7f7;
+    display: inline-block;
+    padding: 2px 5px;
+    border: 1px solid #e3e3e3;
+    border-radius: 3px;
 }
