@@ -70,7 +70,17 @@ class m130524_201442_init extends Migration
             'ultagg' => $this->datetime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
             'utente' => $this->string(45)->notNull(),
         ], $tableOptions);
-        $this->addForeignKey('fk_profilo_user', '{{%profilo}}', ['id'], '{{%user}}', ['id']);        
+        $this->addForeignKey('fk_profilo_user', '{{%profilo}}', ['id'], '{{%user}}', ['id']);     
+
+        $this->createTable('session', [
+            'id' => $this->char(40)->notNull(),
+            'expire' => $this->integer(),
+            'data' => $this->binary(),
+            'user_id' => $this->integer(),
+            'browser_platform' => $this->char(200)->notNull(),
+        ]);
+
+        $this->addPrimaryKey('session_pk', 'session', 'id');              
     }
 
     public function down()
