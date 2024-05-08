@@ -245,7 +245,7 @@ class User extends BaseModel implements IdentityInterface
     public function getZgruppi()
     {
         if ( empty($this->gruppi) || $this->gruppi === null) {
-            $query = ztrans::find()->select('ztrans.*') // era $this->gruppi = 
+            $query = ztrans::find()->select('ztrans.nometrans') // era $this->gruppi = 
                     ->innerJoin('zpermessi', '`zpermessi`.`idtrans` = `ztrans`.`idtrans`')
                     ->innerJoin('zutgr', '`zutgr`.`idgruppo` = `zpermessi`.`idgruppo`')
                     ->where(['zutgr.id' => $this->id]);
