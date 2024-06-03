@@ -45,10 +45,6 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
       ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
   );?>  
   <?php if (!Yii::$app->request->cookies->has("userconsent")) {
-      $this->registerJsFile(
-          '@web/js/consent.js',
-          ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
-      );
       //Fix for closing icon (x) not showing up in dialog
       $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
                       var bootstrapButton = $.fn.button.noConflict(); 
