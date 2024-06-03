@@ -24,7 +24,9 @@
         "pzavoli71/yii2-redactor": "dev-master",
         "yiisoft/yii2-imagine": "*",
         "kartik-v/yii2-mpdf": "dev-master",
-        "wolfcast/browser-detection":"*"
+        "wolfcast/browser-detection":"*",
+        "pzavoli71/cookieconsent":"*",
+        "alikdex/yii2-crawler-detect": "1.0"        
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -51,7 +53,9 @@
         "pzavoli71/yii2-redactor": "dev-master",
         "yiisoft/yii2-imagine": "*",
         "kartik-v/yii2-mpdf": "dev-master",
-        "wolfcast/browser-detection":"*"
+        "wolfcast/browser-detection":"*",
+        "pzavoli71/cookieconsent":"*",
+        "alikdex/yii2-crawler-detect": "1.0"
     },
     "replace": {
         "kartik-v/yii2-widget-datetimepicker": "*"
