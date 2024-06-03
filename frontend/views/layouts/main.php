@@ -36,9 +36,25 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 <?php $this->registerJsFile(
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
-    );?>
-    
-    <?php $this->head() ?>
+);?>
+
+  <!-- **************** -->
+  <!-- Consent decision -->
+  <?php if (!Yii::$app->request->cookies->has("userconsent")) {
+      $this->registerJsFile(
+          '@web/js/consent.js',
+          ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
+      );
+      //Fix for closing icon (x) not showing up in dialog
+      $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
+                      var bootstrapButton = $.fn.button.noConflict(); 
+                      $.fn.bootstrapBtn = bootstrapButton;
+                  }",
+                  \yii\web\View::POS_READY
+      );    
+  } ?>  
+  
+<?php $this->head() ?>
 </head>
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
