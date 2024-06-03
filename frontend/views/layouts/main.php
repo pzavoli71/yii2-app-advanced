@@ -40,6 +40,10 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
 
   <!-- **************** -->
   <!-- Consent decision -->
+  <?php $this->registerJsFile(
+      '@web/js/app.js',
+      ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
+  );?>  
   <?php if (!Yii::$app->request->cookies->has("userconsent")) {
       $this->registerJsFile(
           '@web/js/consent.js',
