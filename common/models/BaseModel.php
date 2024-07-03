@@ -12,7 +12,6 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\imagine\Image;  
 use Imagine\Image\Box;  
-use yii\base\UserException;
 
 /**
  * Description of BaseModel
@@ -73,7 +72,7 @@ class BaseModel extends \yii\db\ActiveRecord {
             }
             return false;
         }
-          
+        
           protected function convertiNumero($numero) {
                 $conv = str_replace('.', '', $numero);
                 $conv = str_replace(',', '.', $conv);  
@@ -104,13 +103,13 @@ class BaseModel extends \yii\db\ActiveRecord {
                 return 0;              
           }
           
-          protected function convertiStringToDateTime($valore) {
+          public static function convertiStringToDateTime($valore) {
               if ( $valore == null || $valore == '')
                   return null;
               $format = \common\config\db\mysql\ColumnSchema::$saveDateTimeFormat;
               $conv = \DateTime::createFromFormat($format, $valore);
               if (!$conv) 
-                  throw new UserException("Could not parse the date: " . $valore);
+                  throw new \UnexpectedValueException("Could not parse the date: " . $valore);
               return $conv;
           }
           
@@ -120,13 +119,12 @@ class BaseModel extends \yii\db\ActiveRecord {
               $format = \common\config\db\mysql\ColumnSchema::$saveDateFormat;
               $conv = \DateTime::createFromFormat($format, $valore);
               if (!$conv) 
-                  throw new UserException("Could not parse the date: " . $valore);
+                  throw new \UnexpectedValueException("Could not parse the date: " . $valore);
               return $conv;
           }                    
           
           public function setAttributes($values, $safeOnly = true) {
               parent::setAttributes($values, $safeOnly);
-              $validated = true;
             foreach ($this->number_columns as $nomecol) {
                 if ( $this->attributes[$nomecol] != null) {
                     $val = $this->convertiNumero($this->attributes[$nomecol]);
@@ -145,19 +143,9 @@ class BaseModel extends \yii\db\ActiveRecord {
             }
             
             foreach ($this->date_columns as $nomecol) {
-                try {
-                    $oldval = $this->attributes[$nomecol];
-                    $val = $this->convertiStringToDate($this->attributes[$nomecol]);                
-                    //$this->setAttribute($nomecol, $val);
-                } catch(UserException $e)  {
-                    $this->addError($nomecol, "Errore in validazione data");
-                    $this->setAttribute($nomecol, $oldval);
-                    $validated = false;
-                    //$this->errors[$nomecol][] = 'Errore in conversione data';
-                }
+                $val = $this->convertiStringToDate($this->attributes[$nomecol]);
+                $this->setAttribute($nomecol, $val);
             }              
-            if ( !$validated)
-                return false;
           }
           
           public function beforeSave($insert) {
@@ -172,7 +160,7 @@ class BaseModel extends \yii\db\ActiveRecord {
                     if ($max == null )
                         $max = 0;
                     if ( $max < 0) 
-                        throw new UserException("Impossibile caricare il valore di " . $nomecol);
+                        throw new \UnexpectedValueException("Impossibile caricare il valore di " . $nomecol);
                     $max++;
                     $this[$nomecol] = $max;
                 }
@@ -228,11 +216,26 @@ class BaseModel extends \yii\db\ActiveRecord {
                 $this->imageFile->extension == 'tiff' || $this->imageFile->extension == 'png') {
             // Ridimensiono l'immagine dopo averla salvata
             $filename = 'uploads/' . $filesalvato;
-            $sizes = getimagesize($filename);
-            //[0] => 604 [1] => 244
-            if ( $sizes[0] > $maximgwidth) {
-                $width = 900;            
-                $height = round($sizes[1]*$width/$sizes[0]); 
+            list($width, $height, $type, $attr) = getimagesize($filename); // $sizes = 
+            $exif = exif_read_data($filename);
+            if(!empty($exif['Orientation'])) {
+                switch($exif['Orientation']) {
+                    case 8:
+                        //$image = imagerotate($image,90,0);
+                        break;
+                    case 3:
+                        //$image = imagerotate($image,180,0);
+                        break;
+                    case 6:
+                        $tmp = $width; $width = $height; $height = $tmp;
+                        break;
+                }
+            }            
+            
+            if ( $width > $maximgwidth) { // $sizes[0]
+                $height = round($height * $maximgwidth / $width); 
+                $width = $maximgwidth;            
+                //$height = round($sizes[1]*$width/$sizes[0]); 
                 $savepath = 'uploads/' . $relpath . 'thumbnail-' . $width . 'x' . $height . '_' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
                 Image::getImagine()->open($filename)->thumbnail(new Box($width, $height))->save($savepath , ['quality' => 90]);
                 unlink($filename);
