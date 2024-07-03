@@ -237,7 +237,11 @@ class BaseModel extends \yii\db\ActiveRecord {
                 $width = $maximgwidth;            
                 //$height = round($sizes[1]*$width/$sizes[0]); 
                 $savepath = 'uploads/' . $relpath . 'thumbnail-' . $width . 'x' . $height . '_' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
-                Image::getImagine()->open($filename)->thumbnail(new Box($width, $height))->save($savepath , ['quality' => 90]);
+                $image = Image::getImagine()->open($filename);
+                $image = Image::autorotate($image);
+                $image->thumbnail(new Box($width, $height))->save($savepath , ['quality' => 90]);
+                //Image::getImagine()->open($filename)->(thumbnail(new Box($width, $height))->save($savepath , ['quality' => 90]);
+                unlink($filename);
                 unlink($filename);
                 $filesalvato = $relpath . 'thumbnail-' . $width . 'x' . $height . '_' . $this->imageFile->baseName. '.' . $this->imageFile->extension;
             }
