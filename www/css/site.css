@@ -6,8 +6,7 @@
 main {
     padding:  5px;	
     background-color:white;
-    width:99%;
-    padding-bottom: 0px;
+    /*width:99%;*/
 }
 
 main > .container, main > .container-fluid
@@ -142,10 +141,9 @@ td.relazione.closed {
 	min-height:30px;	
 }
 .tabLista td.closed, .tabLista .td.closed {
-    height:0px;	
-    padding-top:0px !important;
-    padding-bottom:0px !important;
-    border-bottom: 1px solid rgb(255 255 255);        
+	height:0px;	
+	padding-top:0px !important;
+	padding-bottom:0px !important;
 }
 
 .tabLista td:empty{
@@ -177,6 +175,11 @@ td.relazione.closed {
     display:block;
 }
 
+.tabLista td {
+    border-left: 1px solid rgb(236, 236, 236);
+    border-bottom: 1px solid rgb(236, 236, 236);
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   [class*="col-"] {
@@ -190,21 +193,15 @@ td.relazione.closed {
             background: #FFF;
     }
     .tabLista:not([class*=nomobile]) td:nth-child(odd) {
-        background: #f9f9f9;        
-    }
-    .tabLista:not([class*=nomobile]) td.tdbottoni {
-        background-color:white !important;
-        border:1px solid #EEEEEE;
-        box-shadow: inset 0px 0px 16px 1px #DDDDDD;
+        background: #fafafa;        
     }
     
     .tabLista:not([class*=nomobile]) tr:not([id^=RigaRel]) {
         display:block;
-        border: 1px solid #cbc7c7;
+        border: 1px solid #dbdbdb;
         padding: 5px;
         width: 99%;
-        margin: 0px 0 1px 0;
-        box-shadow: 0px 0px 12px 0px #bdb4b4;            
+        margin: 10px 0 10px 0;
     }
     .tabLista:not([class*=nomobile]) tr[id^=RigaRel] {
         display:block;
@@ -221,33 +218,30 @@ td.relazione.closed {
     .tabLista:not([class*=nomobile]) th, .tabLista tr.th {
         display:none;
     }
-
+    .tabLista tr.nomobile {
+        display:none !important;
+    }
     .tabLista:not([class*=nomobile]) .headcol {
-        display: inline-block;
+        display:inline-block;
         font-weight: bold;
-        margin-right: 15px;
-        width: 30%;
-        /*background-color: white;*/ /*#e5e9fd;*/
-        /*background-color: antiquewhite;*/
-        padding: 5px;
-        border-radius: 2px;
-        /*border: 1px solid #d9d9d9;        */
-        color: black;
+        margin-right:15px;
     }
     .tabLista:not([class*=nomobile]) td img {
         max-width:90%;
     }
     .tabLista:not([class*=nomobile]) td:not(:empty) {
         min-height: 0px;
-        border:1px solid #e7e7e7;
     }    
     .imgdoc {
         max-width:95%;
     }
-    .ui-dialog {
-        left: 1.5% !important;
-        width: 97% !important;
+    .ui-dialog .consent { 
+        font-size: x-small;
     }    
+    .ui-dialog .consentchoice { 
+        padding:0px;
+    }    
+    
 }
 
 .imgdoc {
@@ -268,12 +262,8 @@ td.open, .td.open  {
 }
 .tabLista td, .tabLista .td {
     line-height: 1.5em;
-    /*padding: 5px;*/
-    border-left: 1px solid rgb(236, 236, 236);
-    border-bottom: 1px solid rgb(167 167 167);
-    padding:10px;
+    padding: 5px;
 }
-
 td.closed div, .td.closed div {
     display: none;
 }
@@ -400,25 +390,22 @@ a {
         justify-content: center;
         flex-direction: row;
         align-items: center;
-
-        height: 100%;
-        width: 100%;
-        text-align: right;
 }
 #divloading span {
 	font-size:13pt;
-	display:inline-block;
+	/*display:inline-block;*/
+        display:block;
 	text-align:right;
 	line-height: 20px;
 	height: 20px;
 	vertical-align: middle;
 	font-weight:bold;
 	margin-left:10px;
-        right:0px;
 }
 #divloading img {
 	font-size:7pt;
-	display:inline-block;
+	/*display:inline-block;*/
+        display:block;
 	width:20px;
         height:20px;
 }
@@ -491,27 +478,31 @@ a {
         max-width: none !important;
     }
 }
-.tabLista th {
-    background-color:#dddddd;
+.btn-link {
+    color: black;
+    padding:3px 4px 3px 4px;   
 }
-
-th.ultagg, th.utente, td.ultagg, td.utente{
-    font-style: italic;
-    font-size: small;
-    color: gray;
+.gm-style-iw-d > div {
+    width:fit-content;
 }
-
-span.ultagg {
-    font-style: italic;
-    font-size: small;
-    color: gray;
-    border-top: 1px solid #c7c7c7;
-    padding-top: 3px;
+.cookieconsent {
+position: fixed;
+    left: 2px;
+    bottom: 50px;
+    border: 1px solid #284d85;
+    background-color: #78aad5;
+    padding: 9px 0px;
+    border-radius: 20px;
+    text-align: center;
+    display: block;
+    color: white;
+    font-size: 8pt;
 }
-span.ultagg > b {
-    background-color: #f7f7f7;
-    display: inline-block;
-    padding: 2px 5px;
-    border: 1px solid #e3e3e3;
-    border-radius: 3px;
+.cookieconsent a {
+    color:white;
+}
+.cookieconsent:hover {
+    background-color:#DDDDDD;
+    color:black;
+    transition: all 0.2s ease 0s;
 }
