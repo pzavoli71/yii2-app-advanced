@@ -67,13 +67,13 @@ class BaseController  extends Controller{
         return true;
     }   
     
-    // Controllo se c'Ã¨ una sessione attiva, altrimenti errore
+    // Controllo se c'è una sessione attiva, altrimenti errore
     public function beforeAction($action): bool {
         if (!parent::beforeAction($action)) { return false; }
-        if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->soggetto->IdSoggetto)) {
-            $this->layout = 'mainform';
+        /*if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->profilo->IdProfilo)) {
+            //$this->layout = 'mainform';
             throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
-        }
+        }*/
         return true;
     }
     
@@ -87,7 +87,7 @@ class BaseController  extends Controller{
         $trovato = false;
         if ( !empty($windowparams['freetoall'])) {
             $trovato = true;
-        } else {
+        } else {                        
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
@@ -102,11 +102,19 @@ class BaseController  extends Controller{
             }
         }
         $url = '';
-        $fa = '';
+        $fa = ''; $far = ''; $fas = '';
         if (str_contains($text, '|fa-')) {
             $pos = strpos($text, '|fa-');
             $fa = substr($text,$pos + 1);
             $text = substr($text,0,$pos);
+        } else if (str_contains($text, '|far')) {
+            $pos = strpos($text, '|far');
+            $far = substr($text,$pos + 1);
+            $text = substr($text,0,$pos);            
+        } else if (str_contains($text, '|fas')) {
+            $pos = strpos($text, '|fas');
+            $fas = substr($text,$pos + 1);
+            $text = substr($text,0,$pos);            
         }
         if ( $trovato) {
             $params = array_merge([$action],$params);
@@ -120,7 +128,13 @@ class BaseController  extends Controller{
                 $titoloform = $windowparams['windowtitle'];
                 $titoloform = str_replace("'","\'",$titoloform);
             }
-            $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);
+            if ( $fas != '') {
+                $url = Html::a("<span class='" . $fas . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);                
+            } else if ( $far != '') {
+                $url = Html::a("<span class='" . $far . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);                                
+            } else {
+                $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);
+            }
         } else {
             $url = ''; //Html::a($text,null,['title'=>$title]);
         }
@@ -139,7 +153,7 @@ class BaseController  extends Controller{
         $trovato = false;
         if ( !empty($params['freetoall'])) {
             $trovato = true;
-        } else {        
+        } else {                
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
@@ -186,33 +200,24 @@ class BaseController  extends Controller{
         foreach ($menuitems as $item) {
             $trovato = false;
             // Elaboro eventuali submenu
-            if ( !isset($item['url']))
-                    $trovato = true;
+            if ( !isset($item['url']) || isset($item['forall']))
+                $trovato = true;
             else {
-                //if ( Yii::$app->session != null ) {
-                    $gruppi = Yii::$app->session['gruppi'];
-                    if ( $gruppi == null) {
-                        $gruppi = \Yii::$app->user->identity->getzGruppi();
-                        Yii::$app->session['gruppi'] = $gruppi;
+                $gruppi = Yii::$app->session['gruppi'];
+                if ( $gruppi == null) {
+                    $gruppi = \Yii::$app->user->identity->getzGruppi();
+                    Yii::$app->session['gruppi'] = $gruppi;
+                }
+                //$gruppi = Yii::$app->user->identity->gruppi;
+                if ( $gruppi != null) {
+                    foreach ($gruppi as $value) {
+                        $val = $item['url'][0];
+                        if ( $value['nometrans'] == $val) {
+                            $trovato = true;
+                            break;
+                        }                            
                     }
-                    //$gruppi = Yii::$app->user->identity->gruppi;
-                    if ( $gruppi != null) {
-                        foreach ($gruppi as $value) {
-                            $val = $item['url'][0];
-                            if ( $value['nometrans'] == $val) {
-                                $trovato = true;
-                                break;
-                            }                            
-                        }
-                        /*foreach ($gruppi as $key => $value) {
-                            $val = $item['url'][0];
-                            if ( $value->nometrans == $val) {
-                                $trovato = true;
-                                break;
-                            }
-                        }*/
-                    }
-                //}
+                }
             }
             if ( $trovato ) {
                 $r = [];
@@ -236,4 +241,13 @@ class BaseController  extends Controller{
     public static function getToday() {
         return date('Y-m-d H:i:s');
     }
+        
+    public function getCookieConsent() {
+        $session = Yii::$app->session;
+        if (isset($session['cookieconsent'])) {
+            return $session['cookieconsent'];
+        }
+        return null;
+    }
+    
 }
