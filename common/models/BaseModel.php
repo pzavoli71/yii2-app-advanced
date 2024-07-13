@@ -21,6 +21,7 @@ use Imagine\Image\Box;
 class BaseModel extends \yii\db\ActiveRecord {
     
     public $number_columns = [];
+    public $decimal_columns = [];
     public $date_columns = [];
     public $datetime_columns = [];
     public $bool_columns = [];
@@ -73,14 +74,23 @@ class BaseModel extends \yii\db\ActiveRecord {
             return false;
         }
         
-          protected function convertiNumero($numero) {
+          protected function convertiNumero($numero, $bDecimal = false) {
+            if (!$bDecimal) {
                 $conv = str_replace('.', '', $numero);
                 $conv = str_replace(',', '.', $conv);  
                 if (str_contains($conv, '.'))
                         $conv = (double) $conv;
                 else
                     $conv = (int) $conv;
-                return $conv;              
+            } else {
+                if (str_contains($numero, ',')) {
+                    $conv = str_replace('.', '', $numero);
+                    $conv = str_replace(',', '.', $conv);
+                } else {
+                    $conv = $numero;
+                }
+            }
+            return $conv;              
           }
           
           protected function convertiBoolInIntero($valore) {
@@ -145,7 +155,13 @@ class BaseModel extends \yii\db\ActiveRecord {
             foreach ($this->date_columns as $nomecol) {
                 $val = $this->convertiStringToDate($this->attributes[$nomecol]);
                 $this->setAttribute($nomecol, $val);
-            }              
+            }
+            foreach ($this->decimal_columns as $nomecol) {
+                if ( $this->attributes[$nomecol] != null) {
+                    $val = $this->convertiNumero($this->attributes[$nomecol], true);
+                    $this->setAttribute($nomecol, $val);
+                }
+            }            
           }
           
           public function beforeSave($insert) {
@@ -222,6 +238,7 @@ class BaseModel extends \yii\db\ActiveRecord {
                 switch($exif['Orientation']) {
                     case 8:
                         //$image = imagerotate($image,90,0);
+                        $tmp = $width; $width = $height; $height = $tmp;
                         break;
                     case 3:
                         //$image = imagerotate($image,180,0);
@@ -241,7 +258,6 @@ class BaseModel extends \yii\db\ActiveRecord {
                 $image = Image::autorotate($image);
                 $image->thumbnail(new Box($width, $height))->save($savepath , ['quality' => 90]);
                 //Image::getImagine()->open($filename)->(thumbnail(new Box($width, $height))->save($savepath , ['quality' => 90]);
-                unlink($filename);
                 unlink($filename);
                 $filesalvato = $relpath . 'thumbnail-' . $width . 'x' . $height . '_' . $this->imageFile->baseName. '.' . $this->imageFile->extension;
             }
