@@ -317,6 +317,11 @@ td.closed div, .td.closed div {
     width: 100%;
 }
 
+.videoframe-class {
+    width:100%;
+    aspect-ratio:16/9;    
+}
+
 #tabs-header > ul {
 	flex-direction: row;
     list-style: none;	
