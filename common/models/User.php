@@ -237,6 +237,11 @@ class User extends BaseModel implements IdentityInterface
         return $this->hasOne(Profilo::class, ['id' => 'id']);
     }
 
+    public function getGruppis()
+    {
+        return $this->hasMany(zutgr::class, ['id' => 'id']);
+    }
+        
     /**
      * Gets query for zgruppo.
      *
@@ -259,7 +264,28 @@ class User extends BaseModel implements IdentityInterface
         }
         return $this->gruppi;
     }
-    
+
+    public function beforeDelete()
+    {
+        if ( !parent::beforeDelete()) {
+            return false;
+        }
+        // Devo eliminare Profilo e zutgr
+        $profilo = $this->profilo;
+        if ( ! $profilo->delete()) {
+            throw new UserException("Errore in cancellazione profilo utente!");
+        }
+        $zutgr = $this->gruppis;
+        if (!empty($zutgr)) {
+            foreach ($zutgr as $gruppo) {
+                if ( !$gruppo->delete()) {
+                    throw new UserException("Errore in cancellazione gruppi dell'utente!");                    
+                }
+            }
+        }
+        return true;
+    }
+        
     public function afterSave($insert, $changedAttributes) {
         parent::afterSave($insert, $changedAttributes);
         if ( !$insert) 
