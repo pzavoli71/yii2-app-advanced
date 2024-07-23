@@ -78,6 +78,7 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
     } else {
         $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/abilitazione/profilo/view','IdProfilo' => Yii::$app->user->identity->profilo->IdProfilo]];        
+        $menuItems[] = ['label' => 'Utenti', 'url' => ['/user/lista']];        
     }
 
     echo Nav::widget([
