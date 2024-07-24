@@ -473,6 +473,15 @@ a {
 .form-group input, .form-group select {
     font-size: 100%;
 }
+.form-group > label {
+    font-weight: bold;
+}
+.form-group {
+    margin: 5px 5px;
+}
+.form-group input, .form-group select {
+    font-size: 100%;
+}
 .ui-dialog {
     width:95%;
     /*max-width:800px;*/
