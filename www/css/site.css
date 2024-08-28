@@ -443,6 +443,7 @@ a {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: end;
+    justify-content: space-between;    	
 }
 .searchform .form-group {
     display: block;
@@ -465,7 +466,7 @@ a {
 .searchform .form-group-search {
     display: block;
     position: relative;
-    left: 50px;    
+    /*left: 50px;    */
     /*position: absolute;
     right: 10px;
     bottom: 5px;    */
