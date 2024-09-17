@@ -180,6 +180,10 @@ td.relazione.closed {
     border-bottom: 1px solid rgb(236, 236, 236);
 }
 
+.tabLista:not([class*=nomobile]) .tdbottoni .togglerelazione {
+    display: none;
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   [class*="col-"] {
@@ -222,9 +226,10 @@ td.relazione.closed {
         display:none !important;
     }
     .tabLista:not([class*=nomobile]) .headcol {
-        display:inline-block;
+        display:block;
         font-weight: bold;
         margin-right:15px;
+	color:black;
     }
     .tabLista:not([class*=nomobile]) td img {
         max-width:90%;
@@ -241,7 +246,16 @@ td.relazione.closed {
     .ui-dialog .consentchoice { 
         padding:0px;
     }    
-    
+
+    .tabLista:not([class*=nomobile]) .tdbottoni .togglerelazione {
+        display: inline-block;
+        color: black;
+        font-size:2em;
+        vertical-align: middle;
+    }    
+    .tabLista:not([class*=nomobile]) .tdbottonifrontali .togglerelazione {
+        display: none;
+    }   	
 }
 
 .imgdoc {
