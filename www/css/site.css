@@ -6,7 +6,8 @@
 main {
     padding:  5px;	
     background-color:white;
-    /*width:99%;*/
+    width:99%;
+    padding-bottom: 0px;
 }
 
 main > .container, main > .container-fluid
@@ -141,9 +142,10 @@ td.relazione.closed {
 	min-height:30px;	
 }
 .tabLista td.closed, .tabLista .td.closed {
-	height:0px;	
-	padding-top:0px !important;
-	padding-bottom:0px !important;
+    height:0px;	
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+    border-bottom: 1px solid rgb(255 255 255);        
 }
 
 .tabLista td:empty{
@@ -175,11 +177,6 @@ td.relazione.closed {
     display:block;
 }
 
-.tabLista td {
-    border-left: 1px solid rgb(236, 236, 236);
-    border-bottom: 1px solid rgb(236, 236, 236);
-}
-
 .tabLista:not([class*=nomobile]) .tdbottoni .togglerelazione {
     display: none;
 }
@@ -197,15 +194,21 @@ td.relazione.closed {
             background: #FFF;
     }
     .tabLista:not([class*=nomobile]) td:nth-child(odd) {
-        background: #fafafa;        
+        background: #f9f9f9;        
+    }
+    .tabLista:not([class*=nomobile]) td.tdbottoni {
+        background-color:white !important;
+        border:1px solid #EEEEEE;
+        box-shadow: inset 0px 0px 16px 1px #DDDDDD;
     }
     
     .tabLista:not([class*=nomobile]) tr:not([id^=RigaRel]) {
         display:block;
-        border: 1px solid #dbdbdb;
+        border: 1px solid #cbc7c7;
         padding: 5px;
         width: 99%;
-        margin: 10px 0 10px 0;
+        margin: 0px 0 1px 0;
+        box-shadow: 0px 0px 12px 0px #bdb4b4;            
     }
     .tabLista:not([class*=nomobile]) tr[id^=RigaRel] {
         display:block;
@@ -222,31 +225,28 @@ td.relazione.closed {
     .tabLista:not([class*=nomobile]) th, .tabLista tr.th {
         display:none;
     }
-    .tabLista tr.nomobile {
-        display:none !important;
-    }
+
     .tabLista:not([class*=nomobile]) .headcol {
-        display:block;
+        display: block;
         font-weight: bold;
-        margin-right:15px;
-	color:black;
+        margin-right: 15px;
+        border-radius: 2px;
+        color: black;
     }
     .tabLista:not([class*=nomobile]) td img {
         max-width:90%;
     }
     .tabLista:not([class*=nomobile]) td:not(:empty) {
         min-height: 0px;
+        border:1px solid #e7e7e7;
     }    
     .imgdoc {
         max-width:95%;
     }
-    .ui-dialog .consent { 
-        font-size: x-small;
+    .ui-dialog {
+        left: 1.5% !important;
+        width: 97% !important;
     }    
-    .ui-dialog .consentchoice { 
-        padding:0px;
-    }    
-
     .tabLista:not([class*=nomobile]) .tdbottoni .togglerelazione {
         display: inline-block;
         color: black;
@@ -255,7 +255,18 @@ td.relazione.closed {
     }    
     .tabLista:not([class*=nomobile]) .tdbottonifrontali .togglerelazione {
         display: none;
-    }   	
+    }    
+    
+    /*.tdRelazione.open {
+        display: block;
+        position: absolute;
+        top: 10px;
+        width: 95%;
+        padding: 0px;
+    }    */
+    .tdRelazione.open > .divRelazione{
+        margin-left:5px !important;
+    }    
 }
 
 .imgdoc {
@@ -276,8 +287,12 @@ td.open, .td.open  {
 }
 .tabLista td, .tabLista .td {
     line-height: 1.5em;
-    padding: 5px;
+    /*padding: 5px;*/
+    border-left: 1px solid rgb(236, 236, 236);
+    border-bottom: 1px solid rgb(167 167 167);
+    padding:10px;
 }
+
 td.closed div, .td.closed div {
     display: none;
 }
@@ -329,11 +344,6 @@ td.closed div, .td.closed div {
 }
 .frame-form {
     width: 100%;
-}
-
-.videoframe-class {
-    width:100%;
-    aspect-ratio:16/9;    
 }
 
 #tabs-header > ul {
@@ -409,22 +419,25 @@ a {
         justify-content: center;
         flex-direction: row;
         align-items: center;
+
+        height: 100%;
+        width: 100%;
+        text-align: right;
 }
 #divloading span {
 	font-size:13pt;
-	/*display:inline-block;*/
-        display:block;
+	display:inline-block;
 	text-align:right;
 	line-height: 20px;
 	height: 20px;
 	vertical-align: middle;
 	font-weight:bold;
 	margin-left:10px;
+        right:0px;
 }
 #divloading img {
 	font-size:7pt;
-	/*display:inline-block;*/
-        display:block;
+	display:inline-block;
 	width:20px;
         height:20px;
 }
@@ -457,7 +470,7 @@ a {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: end;
-    justify-content: space-between;    	
+    justify-content: space-between;    
 }
 .searchform .form-group {
     display: block;
@@ -488,18 +501,20 @@ a {
 .form-group input, .form-group select {
     font-size: 100%;
 }
+.form-group input, .form-group select {
+    font-size: 100%;
+}
 .form-group > label {
     font-weight: bold;
 }
 .form-group {
     margin: 5px 5px;
-}
-.form-group input, .form-group select {
-    font-size: 100%;
+    /* margin-bottom: 8px; */
 }
 input[type=file] {
     display: block;
 }
+
 .ui-dialog {
     width:95%;
     /*max-width:800px;*/
@@ -537,4 +552,73 @@ position: fixed;
     background-color:#DDDDDD;
     color:black;
     transition: all 0.2s ease 0s;
+}
+.tabLista th {
+    background-color:#dddddd;
+}
+
+th.ultagg, th.utente, td.ultagg, td.utente{
+    font-style: italic;
+    font-size: small;
+    color: gray;
+}
+
+span.ultagg {
+    font-style: italic;
+    font-size: small;
+    color: gray;
+    border-top: 1px solid #c7c7c7;
+    padding-top: 3px;
+}
+span.ultagg > b {
+    background-color: #f7f7f7;
+    display: inline-block;
+    padding: 2px 5px;
+    border: 1px solid #e3e3e3;
+    border-radius: 3px;
+}
+.divmenucontestuale {
+    position:relative;
+}
+.divmenucontestuale > a{
+    display:block;
+}
+@media only screen and (max-width: 768px) {
+    .divmenucontestuale{
+        min-width:50px;
+        display:block;
+    }
+    .divmenucontestuale > a{
+        display: inline-block;
+        margin-bottom: 10px;
+        border: 2px solid black;
+        padding: 5px;
+        line-height: 0px;
+        background-color: #6882ff;
+        color: white;
+    }
+    .menucontestuale {
+        left:0px;
+        right:initial !important;        
+    }
+}
+.menucontestuale {
+    display: none;
+    border: 1px solid #d7d7d7;
+    border-radius: 2px;
+    background-color: aliceblue;
+    padding: 5px;
+    position:absolute;
+    right:0px;
+    z-index:1000;
+}
+.menucontestuale .linkmenu {
+    display:block;
+    font-size:0.8em;
+    padding:10px;
+    line-height: 0px;
+}
+.menucontestuale .linkmenu:hover {
+    background-color: darkslategray;
+    color: white;    
 }
