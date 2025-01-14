@@ -12,9 +12,36 @@ function AppGlob() {
 		this.callbackPerAperturaRelazioni = fun_GestRelazioni;
 	};
 
+	// Apre un menu contestuale per i comandi di ogni riga della lista
+	this.apriMenuContestuale = function(obj) {	
+                // Verifico se sono in modalità mobile
+        let isMobileDevice = window.matchMedia("only screen and (max-width: 768px)").matches;
+		var $obj = $(obj);
+		var id = $obj.attr('pos'); // e' il position della riga
+        $('.menucontestuale').hide(200);
+        $menu = $obj.parent().find('.menucontestuale');
+        if ( $menu.is(':visible'))
+            $menu.hide(200);
+        else
+            $menu.show(200);
+    };
+
+	// Apre una riga sotto quella corrente, per visualizzare le relazioni aperte con altri pdc
+	// Attenzione ad usare le vecchie liste con questa funzione vecchia. Nella vecchia infatti veniva cecata la riga della relazione usando l'indice di posizione (deprecato)
+	this.closeMenuContestuale = function(obj) {	
+                // Verifico se sono in modalità mobile
+        let isMobileDevice = window.matchMedia("only screen and (max-width: 768px)").matches;
+		var $obj = $(obj);
+		var id = $obj.attr('pos'); // e' il position della riga
+        $('.menucontestuale').hide(200);
+        return true;
+    };
+
 	// Apre una riga sotto quella corrente, per visualizzare le relazioni aperte con altri pdc
 	// Attenzione ad usare le vecchie liste con questa funzione vecchia. Nella vecchia infatti veniva cecata la riga della relazione usando l'indice di posizione (deprecato)
 	this.apriRigaRelazioni = function(obj, nomepdc) {	
+                // Verifico se sono in modalità mobile
+                let isMobileDevice = window.matchMedia("only screen and (max-width: 768px)").matches;
 		var $obj = $(obj);
 		var id = $obj.attr('pos'); // e' il position della riga
 		var spezzanome = nomepdc.split('.');
@@ -33,14 +60,20 @@ function AppGlob() {
 			var src = $obj.find('i').removeClass('fa-plus-square').addClass('fa-minus-square');
 			if (this.callbackPerAperturaRelazioni)
 				this.callbackPerAperturaRelazioni(chiave, nomepdc, $riga, $r);
+                        if(isMobileDevice){
+                            //window.top.scrollTo(0,0);
+                        }                                            
 		} else {
 			$r.find('td:first').removeClass('open').addClass('closed');
 			$r.find('td:first > div').hide();
 			var src = $obj.find('i').removeClass('fa-minus-square').addClass('fa-plus-square');
 			ca = 'chiudi';
+                        if(isMobileDevice){
+                            //obj.get(0).scrollIntoView();
+                        }
 		}
 		setTimeout(function() {AppGlob.resize2(window)}, 500);
-	  }
+	};
 	
 	this.showLoading = function() {
 		$('#divloading').css('display','flex');
@@ -329,14 +362,6 @@ function AppGlob() {
 			  setTimeout(function() {AppGlob.resize2(wPadre)},400);
 		  }
 	};	
-
-	this.showLoading = function() {
-		$('#divloading').show();
-	};
-
-	this.hideLoading = function() {
-		$('#divloading').hide();
-	};
 
         // Apre una form con i parametri impostati
         this.apriForm = function(obj, href, callback, windowparam, title = "Inserisci i parametri") {
