@@ -86,8 +86,14 @@ class BaseController  extends Controller{
         if ( !empty($params['action']))
             $action = $params['action'];
         $requestparams = '';
-        if ( !empty($params['requestparams']))
-            $requestparams = $params['requestparams'];        
+        if ( !empty($params['requestparams'])) {
+            $requestparams = "";
+            $keys = array_keys($params['requestparams']);
+            foreach ($params['requestparams'] as $key => $value) {
+                $requestparams .= $key . '=' . $value . '&';
+            }
+            $requestparams = $params['requestparams']; //[$key];        
+        }
         $linktitle = $params['linktitle'];
         if ( !empty($params['linktitle']))
             $linktitle = $params['linktitle'];        
@@ -145,7 +151,11 @@ class BaseController  extends Controller{
             $text = substr($text,0,$pos);            
         }
         if ( $trovato) {
-            $params = array_merge([$action],$params);
+            if (is_array($params)) {
+                $paramslink = array_merge([$action],$params);
+            } else {
+                $paramslink = array_merge([$action],[$params]);
+            }
             $p = '{';
             if ( !empty($windowparams['windowwidth'])) {
                 $p .= "width:" . $windowparams['windowwidth'] . ",";
@@ -160,7 +170,7 @@ class BaseController  extends Controller{
             if (!empty($onbeforeclick) )
                 $onclick = 'if (' . $onbeforeclick . ") return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')";
             if ( $text == 'Del') {
-                $url = Html::a($text, ['delete', $params], [
+                $url = Html::a($text, $paramslink,[ //['delete', $params[1]], [
                     'class' => $buttonclass,
                     'data' => [
                         'confirm' => 'Are you sure you want to delete this item?',
@@ -169,11 +179,11 @@ class BaseController  extends Controller{
                 ]);
             } else {
                 if ( $fas != '') {
-                    $url = Html::a("<span class='fas " . $fas . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
+                    $url = Html::a("<span class='fas " . $fas . "'></span>&#xA0;" . $text,$paramslink, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
                 } else if ( $far != '') {
-                    $url = Html::a("<span class='far " . $far . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
+                    $url = Html::a("<span class='far " . $far . "'></span>&#xA0;" . $text,$paramslink, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
                 } else {
-                    $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
+                    $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$paramslink, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
                 }                                
             }
         } else {
