@@ -622,3 +622,9 @@ span.ultagg > b {
     background-color: darkslategray;
     color: white;    
 }
+.login {
+    color:gray;
+}
+.login:hover {
+    color:white;
+}
