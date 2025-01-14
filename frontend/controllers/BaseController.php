@@ -70,24 +70,52 @@ class BaseController  extends Controller{
     // Controllo se c'è una sessione attiva, altrimenti errore
     public function beforeAction($action): bool {
         if (!parent::beforeAction($action)) { return false; }
-        /*if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->profilo->IdProfilo)) {
-            //$this->layout = 'mainform';
+        if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->soggetto->IdSoggetto)) {
+            $this->layout = 'mainform';
             throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
-        }*/
+        }
         return true;
     }
     
+
+    public static function linkwin1par($params) {
+        $text = '';
+        if ( !empty($params['text']))
+            $text = $params['text'];
+        $action = ''; 
+        if ( !empty($params['action']))
+            $action = $params['action'];
+        $requestparams = '';
+        if ( !empty($params['requestparams']))
+            $requestparams = $params['requestparams'];        
+        $linktitle = $params['linktitle'];
+        if ( !empty($params['linktitle']))
+            $linktitle = $params['linktitle'];        
+        $callback = '';
+        if ( !empty($params['callback']))
+            $callback = $params['callback'];                
+        $windowparams = '';
+        if ( !empty($params['windowparams']))
+            $windowparams = $params['windowparams'];                
+        $buttonclass = 'btn btn-primary';
+        if ( !empty($params['buttonclass']))
+            $buttonclass = $params['buttonclass'];                
+        $onbeforeclick = null;
+        if ( !empty($params['onbeforeclick']))
+            $onbeforeclick = $params['onbeforeclick'];                
+        return self::linkwin($text, $action, $requestparams, $linktitle, $callback, $windowparams, $buttonclass, $onbeforeclick);
+    }
     
     /**
      * 
      * @param type $action Nome dell'azione del tipo controller/action
      * @param type $permesso AIRVLC
      */
-    public static function linkwin($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary') {
+    public static function linkwin($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary', $onbeforeclick = null) {
         $trovato = false;
         if ( !empty($windowparams['freetoall'])) {
             $trovato = true;
-        } else {                        
+        } else {
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
@@ -128,12 +156,25 @@ class BaseController  extends Controller{
                 $titoloform = $windowparams['windowtitle'];
                 $titoloform = str_replace("'","\'",$titoloform);
             }
-            if ( $fas != '') {
-                $url = Html::a("<span class='" . $fas . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);                
-            } else if ( $far != '') {
-                $url = Html::a("<span class='" . $far . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);                                
+            $onclick = "return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')";
+            if (!empty($onbeforeclick) )
+                $onclick = 'if (' . $onbeforeclick . ") return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')";
+            if ( $text == 'Del') {
+                $url = Html::a($text, ['delete', $params], [
+                    'class' => $buttonclass,
+                    'data' => [
+                        'confirm' => 'Are you sure you want to delete this item?',
+                        'method' => 'post',
+                    ],
+                ]);
             } else {
-                $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>"return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')"]);
+                if ( $fas != '') {
+                    $url = Html::a("<span class='fas " . $fas . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
+                } else if ( $far != '') {
+                    $url = Html::a("<span class='far " . $far . "'></span>&#xA0;" . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
+                } else {
+                    $url = Html::a(($fa != ''?"<span class='fas " . $fa . "'></span>&#xA0;":"") . $text,$params, ['title'=>$linktitle,'class'=>$buttonclass, 'onclick'=>$onclick]);
+                }                                
             }
         } else {
             $url = ''; //Html::a($text,null,['title'=>$title]);
@@ -153,7 +194,7 @@ class BaseController  extends Controller{
         $trovato = false;
         if ( !empty($params['freetoall'])) {
             $trovato = true;
-        } else {                
+        } else {        
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
@@ -201,7 +242,7 @@ class BaseController  extends Controller{
             $trovato = false;
             // Elaboro eventuali submenu
             if ( !isset($item['url']) || isset($item['forall']))
-                $trovato = true;
+                    $trovato = true;
             else {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi == null) {
@@ -241,13 +282,13 @@ class BaseController  extends Controller{
     public static function getToday() {
         return date('Y-m-d H:i:s');
     }
-        
+    
+      
     public function getCookieConsent() {
         $session = Yii::$app->session;
         if (isset($session['cookieconsent'])) {
             return $session['cookieconsent'];
         }
         return null;
-    }
-    
+    }    
 }
