@@ -261,15 +261,13 @@ td.relazione.closed {
         display: none;
     }    
     
-    /*.tdRelazione.open {
-        display: block;
-        position: absolute;
-        top: 10px;
-        width: 95%;
-        padding: 0px;
-    }    */
     .tdRelazione.open > .divRelazione{
-        margin-left:5px !important;
+        /*margin-left:5px !important;*/
+        width: 95%;
+        margin: auto;        
+        border-radius:0px;
+        border-color:#a7a7a7;
+        box-shadow: 0px 0px 14px 3px #bbbbbb;
     }    
 }
 
@@ -310,7 +308,6 @@ td.closed div, .td.closed div {
 .divRelazione {
     margin: 15px;
     border-radius: 5px;
-	width:95%;
 }
 .btn_minimax {
     float: right;
