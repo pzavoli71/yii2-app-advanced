@@ -119,7 +119,11 @@ a.desc:after {
 .has-error > input.form-control {
     border:1px solid red;    
 }
-
+div.help-block {
+    /*min-height: 8px;*/
+    font-size: 11px;
+    line-height: 8px;
+}
 
 td.relazione.closed {
     height: 0px;    
@@ -289,7 +293,7 @@ td.open, .td.open  {
     line-height: 1.5em;
     /*padding: 5px;*/
     border-left: 1px solid rgb(236, 236, 236);
-    border-bottom: 1px solid rgb(167 167 167);
+    border-bottom: 1px solid rgb(225 225 225);
     padding:10px;
 }
 
@@ -581,7 +585,11 @@ span.ultagg > b {
     position:relative;
 }
 .divmenucontestuale > a{
-    display:block;
+    display: inline;
+    padding: 6px;
+    border: 1px solid #d1cbcb;
+    line-height: 0px;
+    background-color: #e7e7e7;
 }
 @media only screen and (max-width: 768px) {
     .divmenucontestuale{
@@ -606,18 +614,26 @@ span.ultagg > b {
     display: none;
     border: 1px solid #d7d7d7;
     border-radius: 2px;
-    background-color: aliceblue;
-    padding: 5px;
+    background-color: #435f6f;
+    /*padding: 5px;*/
     position:absolute;
     right:0px;
     z-index:1000;
+    color:white;
+    text-align:left;
 }
 .menucontestuale .linkmenu {
     display:block;
     font-size:0.8em;
-    padding:10px;
-    line-height: 0px;
+    padding: 5px 20px;
+    line-height: normal;
 }
+.menucontestuale a.linkmenu {
+    color:white;
+}
+/*.menucontestuale .linkmenu:nth-child(even) {
+    background-color: lavender;
+}*/
 .menucontestuale .linkmenu:hover {
     background-color: darkslategray;
     color: white;    
