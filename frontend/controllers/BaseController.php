@@ -70,10 +70,10 @@ class BaseController  extends Controller{
     // Controllo se c'è una sessione attiva, altrimenti errore
     public function beforeAction($action): bool {
         if (!parent::beforeAction($action)) { return false; }
-        if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->soggetto->IdSoggetto)) {
-            $this->layout = 'mainform';
+        /*if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->profilo->IdProfilo)) {
+            //$this->layout = 'mainform';
             throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
-        }
+        }*/
         return true;
     }
     
@@ -308,7 +308,7 @@ class BaseController  extends Controller{
     public static function creaMenuContestualeRiga($params) { 
         echo '<div class=\'divmenucontestuale\'>   
         <a class=\'togglemenu\' pos=\'' .$params['pos'] . '\' href=\'javascript:void(0)\' onclick=\'AppGlob.apriMenuContestuale(this)\' >
-            <i class=\'fas fa-angle-down\'><!--fa fa-ellipsis-h-->
+            <i class=\'fa fa-angle-down\'><!--fa fa-ellipsis-h-->
             </i>        
         </a>
         <div class=\'menucontestuale\'>';
@@ -371,4 +371,16 @@ class BaseController  extends Controller{
     </div>';
     }
     
+    public static function formattaDataLunga($valore) {
+        $formatter = new \IntlDateFormatter(
+            'it_IT',
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::FULL,
+            'Europe/Rome',
+            \IntlDateFormatter::GREGORIAN
+        );
+        $formatter->setPattern("EEEE d MMMM yyyy kk:mm");
+        $ret = $formatter->format($valore);
+        return $ret;
+    }
 }
