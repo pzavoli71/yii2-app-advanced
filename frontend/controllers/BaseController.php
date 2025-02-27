@@ -347,7 +347,8 @@ class BaseController  extends Controller{
                         'windowparams'=>$windowparams]); 
                 } else if ( $key == 'delete') {
                     echo \frontend\controllers\BaseController::linkwin1par(['text'=>Yii::t('app', 'Cancella'), 'action'=>$link . '/delete','otherparams'=>['delete'=>'true'],'requestparams'=> $chiavi, 
-                        'linktitle'=>Yii::t('app','cancella la riga'),'callback'=>$callback,'buttonclass'=>'linkmenu','onbeforeclick'=>'AppGlob.closeMenuContestuale(this)']); 
+                        'linktitle'=>Yii::t('app','cancella la riga'),'callback'=>$callback,'buttonclass'=>'linkmenu','onbeforeclick'=>'AppGlob.closeMenuContestuale(this)',
+                        'windowparams'=>$windowparams]); 
                 } else {
                     if (is_array($value)) {
                         $link1 = $value['link'];
