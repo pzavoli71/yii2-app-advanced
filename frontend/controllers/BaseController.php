@@ -109,7 +109,10 @@ class BaseController  extends Controller{
         $onbeforeclick = null;
         if ( !empty($params['onbeforeclick']))
             $onbeforeclick = $params['onbeforeclick'];                
-        return self::linkwin($text, $action, $requestparams, $linktitle, $callback, $windowparams, $buttonclass, $onbeforeclick);
+        $otherparams = null;
+        if ( !empty($params['otherparams']))
+            $otherparams = $params['otherparams'];                
+        return self::linkwin($text, $action, $requestparams, $linktitle, $callback, $windowparams, $buttonclass, $onbeforeclick, $otherparams);
     }
     
     /**
@@ -117,7 +120,7 @@ class BaseController  extends Controller{
      * @param type $action Nome dell'azione del tipo controller/action
      * @param type $permesso AIRVLC
      */
-    public static function linkwin($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary', $onbeforeclick = null) {
+    public static function linkwin($text, $action, $params, $linktitle,  $callback, $windowparams=[], $buttonclass = 'btn btn-primary', $onbeforeclick = null, $otherparams = null) {
         $trovato = false;
         if ( !empty($windowparams['freetoall'])) {
             $trovato = true;
@@ -169,7 +172,7 @@ class BaseController  extends Controller{
             $onclick = "return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')";
             if (!empty($onbeforeclick) )
                 $onclick = 'if (' . $onbeforeclick . ") return AppGlob.apriForm(this,'', '" . $callback ."'," . $p . ",'" . $titoloform . "')";
-            if ( $text == 'Del') {
+            if ( !empty($otherparams['delete'])) {
                 $url = Html::a($text, $paramslink,[ //['delete', $params[1]], [
                     'class' => $buttonclass,
                     'data' => [
@@ -301,4 +304,71 @@ class BaseController  extends Controller{
         }
         return null;
     }    
+    
+    public static function creaMenuContestualeRiga($params) { 
+        echo '<div class=\'divmenucontestuale\'>   
+        <a class=\'togglemenu\' pos=\'' .$params['pos'] . '\' href=\'javascript:void(0)\' onclick=\'AppGlob.apriMenuContestuale(this)\' >
+            <i class=\'fas fa-angle-down\'><!--fa fa-ellipsis-h-->
+            </i>        
+        </a>
+        <div class=\'menucontestuale\'>';
+            $link = $params['link'];
+            $chiavi = $params['chiavi']; // Array di chiave=>valore
+            $items = $params['items']; // Array di chiave=>valore
+            $callback = "document.location.reload(false)";
+            if ( !empty($params['callback'])) {
+                $callback = $params['callback'];
+            }            
+            foreach ($items as $key => $value) {
+                $windowparams = [];                
+                if ( !empty($params['windowparams']))
+                    $windowparams = $params['windowparams'];
+                if ( $key == 'edit' || $key == 'view' ) {
+                    if ( !empty($value['windowwidth'])) {
+                        $wwidth = $value['windowwidth'];
+                        $windowparams['windowwidth'] = $wwidth;
+                    } else {
+                        $windowparams['windowwidth'] = 700;                            
+                    }
+                    if ( !empty($value['windowtitle'])) {
+                        $wtitle = $value['windowtitle'];
+                        $windowparams['windowtitle'] = $wtitle;
+                    } else {
+                        $windowparams['windowtitle'] = 'Modifica';
+                    }                    
+                }                
+                if ( !empty($value['callback'])) {
+                    $callback = $value['callback'];
+                }
+                if ( $key == 'edit') {
+                    echo \frontend\controllers\BaseController::linkwin1par(['text'=>Yii::t('app', 'Modifica'), 'action'=>$link . '/update','requestparams'=> $chiavi, 
+                        'linktitle'=>Yii::t('app','Apri per modifica'),'callback'=>$callback,'buttonclass'=>'linkmenu',
+                        'onbeforeclick'=>'AppGlob.closeMenuContestuale(this)',
+                        'windowparams'=>$windowparams]); 
+                } else if ( $key == 'delete') {
+                    echo \frontend\controllers\BaseController::linkwin1par(['text'=>Yii::t('app', 'Cancella'), 'action'=>$link . '/delete','otherparams'=>['delete'=>'true'],'requestparams'=> $chiavi, 
+                        'linktitle'=>Yii::t('app','cancella la riga'),'callback'=>$callback,'buttonclass'=>'linkmenu','onbeforeclick'=>'AppGlob.closeMenuContestuale(this)']); 
+                } else {
+                    if (is_array($value)) {
+                        $link1 = $value['link'];
+                        $title = "";
+                        if ( !empty($value['title'])) {
+                            $title = $value['title'];
+                        }
+                        if ( !empty($value['freetoall'])) {
+                            $free = $value['freetoall'];
+                            if ( $free == true)
+                                $windowparams['freetoall'] = 'true';
+                        }                        
+                        echo \frontend\controllers\BaseController::linkwin1par(['text'=>Yii::t('app', $key), 'action'=>$link1,'requestparams'=> $chiavi, 
+                            'linktitle'=>Yii::t('app',$title),'callback'=>'document.location.reload(false)','buttonclass'=>'linkmenu',
+                            'onbeforeclick'=>'AppGlob.closeMenuContestuale(this)',
+                            'windowparams'=>$windowparams]);
+                    }
+                }                
+            }
+        echo '</div>
+    </div>';
+    }
+    
 }
