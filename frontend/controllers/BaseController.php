@@ -61,11 +61,15 @@ class BaseController  extends Controller{
         return $this->renderContent($content);
     }
     
-    public function upload($imageFile)
+    public function upload($imageFile, $path = "uploads/")
     {
-        $imageFile->saveAs('uploads/' . $imageFile->baseName . '.' . $imageFile->extension);
+        if (!str_ends_with($path, "/")) {
+            $path .= "/";
+        }
+        $imageFile->saveAs($path . $imageFile->baseName . '.' . $imageFile->extension);
         return true;
     }   
+
     
     // Controllo se c'è una sessione attiva, altrimenti errore
     public function beforeAction($action): bool {
