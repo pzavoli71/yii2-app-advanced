@@ -388,4 +388,16 @@ class BaseController  extends Controller{
         $ret = $formatter->format($valore);
         return $ret;
     }
+    public static function formattaDataCorta($valore) {
+        $formatter = new \IntlDateFormatter(
+            'it_IT',
+            \IntlDateFormatter::FULL,
+            \IntlDateFormatter::FULL,
+            'Europe/Rome',
+            \IntlDateFormatter::GREGORIAN
+        );
+        $formatter->setPattern("EEEE d MMMM yyyy");
+        $ret = $formatter->format($valore);
+        return $ret;
+    }    
 }
