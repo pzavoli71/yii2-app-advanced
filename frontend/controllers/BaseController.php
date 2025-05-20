@@ -69,11 +69,21 @@ class BaseController  extends Controller{
         $imageFile->saveAs($path . $imageFile->baseName . '.' . $imageFile->extension);
         return true;
     }   
-
     
     // Controllo se c'è una sessione attiva, altrimenti errore
     public function beforeAction($action): bool {
         if (!parent::beforeAction($action)) { return false; }
+        if ($this->devoControllarePermesso($action)) {
+            if ( Yii::$app->session == null ) 
+                throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
+            $gruppi = Yii::$app->session['gruppi'];
+            if ( $gruppi == null ) 
+                throw new UserException("Non esiste una sessione per l'utente o non trovo i permessi. Eseguire il login.");
+            $trovato = false;
+            if ( empty($gruppi[$action])) {
+                throw new UserException("Non si hanno i permessi per accedere a questa funzione.");                
+            }
+        }
         /*if ( !isset(\Yii::$app->user) || !(isset(\Yii::$app->user->identity)) || !isset(\Yii::$app->user->identity->profilo->IdProfilo)) {
             //$this->layout = 'mainform';
             throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
@@ -81,6 +91,10 @@ class BaseController  extends Controller{
         return true;
     }
     
+    // Indica al sistema che per questo action devo controllare di avere il permesso per questa action
+    public function devoControllarePermesso($action) {
+        return false;
+    }
 
     public static function linkwin1par($params) {
         $text = '';
@@ -132,13 +146,15 @@ class BaseController  extends Controller{
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
-                    //foreach ($gruppi as $key => $value) {
-                    foreach ($gruppi as $value) {
+                    if ( !empty($gruppi[$action])) 
+                        $trovato = true;
+                    /*foreach ($gruppi as $value) {
                         if ( $value['nometrans'] == $action) {
                             $trovato = true;
                             break;
                         }
                     }
+                     */
                 }
             }
         }
@@ -215,13 +231,15 @@ class BaseController  extends Controller{
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
-                    //foreach ($gruppi as $key => $value) {
-                    foreach ($gruppi as $value) {
+                    if ( !empty($gruppi[$action])) 
+                        $trovato = true;
+                    /*foreach ($gruppi as $value) {
                         if ( $value['nometrans'] == $action) {
                             $trovato = true;
                             break;
                         }
                     }
+                     */
                 }
             }
         }
@@ -266,8 +284,11 @@ class BaseController  extends Controller{
                     $gruppi = \Yii::$app->user->identity->getzGruppi();
                     Yii::$app->session['gruppi'] = $gruppi;
                 }
-                //$gruppi = Yii::$app->user->identity->gruppi;
                 if ( $gruppi != null) {
+                    $val = $item['url'][0];
+                    if ( !empty($gruppi[$val])) 
+                        $trovato = true;
+                    /*
                     foreach ($gruppi as $value) {
                         $val = $item['url'][0];
                         if ( $value['nometrans'] == $val) {
@@ -275,6 +296,7 @@ class BaseController  extends Controller{
                             break;
                         }                            
                     }
+                     */
                 }
             }
             if ( $trovato ) {
@@ -341,7 +363,7 @@ class BaseController  extends Controller{
                         $windowparams['windowtitle'] = 'Modifica';
                     }                    
                 }                
-                if ( !empty($value['callback'])) {
+                if ( !empty($value['callback'])) { 
                     $callback = $value['callback'];
                 }
                 if ( $key == 'edit') {
@@ -388,6 +410,7 @@ class BaseController  extends Controller{
         $ret = $formatter->format($valore);
         return $ret;
     }
+    
     public static function formattaDataCorta($valore) {
         $formatter = new \IntlDateFormatter(
             'it_IT',
@@ -399,5 +422,6 @@ class BaseController  extends Controller{
         $formatter->setPattern("EEEE d MMMM yyyy");
         $ret = $formatter->format($valore);
         return $ret;
-    }    
+    }
+    
 }
