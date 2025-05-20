@@ -260,7 +260,12 @@ class User extends BaseModel implements IdentityInterface
             
             $command = $query->createCommand();
             $result = $command->queryAll();
-            $this->gruppi = $result;
+            $transazioni = [];
+            foreach ($result as $value) {
+                $nome = $value['nometrans'];
+                $transazioni[$nome] = $nome;
+            }
+            $this->gruppi = $transazioni;
         }
         return $this->gruppi;
     }
