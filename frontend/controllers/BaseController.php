@@ -80,7 +80,8 @@ class BaseController  extends Controller{
             if ( $gruppi == null ) 
                 throw new UserException("Non esiste una sessione per l'utente o non trovo i permessi. Eseguire il login.");
             $trovato = false;
-            if ( empty($gruppi[$action])) {
+            $action_name = '/' . $this->id . '/' . $action->id; 
+            if ( empty($gruppi[$action_name])) {
                 throw new UserException("Non si hanno i permessi per accedere a questa funzione.");                
             }
         }
