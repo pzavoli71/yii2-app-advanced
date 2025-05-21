@@ -79,7 +79,8 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
     } else {
         $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/abilitazione/profilo/view','IdProfilo' => Yii::$app->user->identity->profilo->IdProfilo]];        
         $menuItems[] = ['label' => 'Utenti', 'url' => ['/user/lista']];        
-        $menuItems[] = ['label' => 'Permessi', 'url' => ['/abilitazione/ztrans/lista']];         
+        $menuItems[] = ['label' => 'Transazioni', 'url' => ['/abilitazione/ztrans/lista']];   
+        $menuItems[] = ['label' => 'Gruppi di utenti', 'url' => ['/abilitazione/zgruppo/lista']];   
     }
     $menuItems = \frontend\controllers\BaseController::menu($menuItems);
 
