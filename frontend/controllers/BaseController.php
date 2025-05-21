@@ -156,7 +156,7 @@ class BaseController  extends Controller{
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
-                    if ( !empty($gruppi[$action])) 
+                    if ( !empty($gruppi['admin']) || !empty($gruppi[$action])) 
                         $trovato = true;
                     /*foreach ($gruppi as $value) {
                         if ( $value['nometrans'] == $action) {
@@ -241,7 +241,7 @@ class BaseController  extends Controller{
             if ( Yii::$app->session != null ) {
                 $gruppi = Yii::$app->session['gruppi'];
                 if ( $gruppi != null) {
-                    if ( !empty($gruppi[$action])) 
+                    if ( !empty($gruppi['admin']) || !empty($gruppi[$action])) 
                         $trovato = true;
                     /*foreach ($gruppi as $value) {
                         if ( $value['nometrans'] == $action) {
@@ -296,7 +296,7 @@ class BaseController  extends Controller{
                 }
                 if ( $gruppi != null) {
                     $val = $item['url'][0];
-                    if ( !empty($gruppi[$val])) 
+                    if ( !empty($gruppi['admin']) || !empty($gruppi[$val])) 
                         $trovato = true;
                     /*
                     foreach ($gruppi as $value) {
