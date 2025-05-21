@@ -270,8 +270,8 @@ class BaseController  extends Controller{
      * @param type $action Nome dell'azione del tipo controller/action     
      */
     public static function menu($menuitems) {
-        if ( Yii::$app->user->isGuest)
-            return null;
+        /*if ( Yii::$app->user->isGuest)
+            return null;*/
         $ret = [];
         $i = 0;
         foreach ($menuitems as $item) {
