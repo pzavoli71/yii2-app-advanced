@@ -3,11 +3,13 @@
 return [
     'components' => [
         'db' => [
-            'class' => \yii\db\Connection::class,
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
+            //'class' => \yii\db\Connection::class,
+            'class' => \common\config\db\NewConnection::class,
+            //'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
             'username' => 'root',
-            'password' => '',
+            'password' => 'xxxxxxx',
             'charset' => 'utf8',
+            'dsn' => 'mysql:host=localhost;dbname=yourdatabase',    
         ],
         'session' => [
             'class' => 'yii\web\DbSession',
@@ -31,7 +33,19 @@ return [
             'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@common/mail',
             // send all mails to a file by default.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                    'scheme' => 'smtps',
+                    'host' => 'smtps.aruba.it',
+                    'username' => 'name@yoursite.org',
+                    'password' => 'xxxxxxxxx',
+                    'port' => 465,
+                    'dsn' => 'native://default',
+            ],
+            'transport' => [
+                'dsn' => 'smtp://name@yoursite.org:xxxxxxxx@smtps.aruba.it:465',
+            ],
+
             // You have to set
             //
             // 'useFileTransport' => false,
