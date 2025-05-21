@@ -1,0 +1,47 @@
+
+<?php
+
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+use yii\web\View;
+/** @var yii\web\View $this */
+/** @var common\models\abilitazione\ztrans $model */
+
+$this->title = $model->idtrans;
+$this->params['model'] = $model;
+//$this->params['breadcrumbs'][] = ['label' => 'Obiettivos', 'url' => ['index']];
+//$this->params['breadcrumbs'][] = $this->title;
+\yii\web\YiiAsset::register($this);
+?>
+<div class="ztrans-view">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+
+    <p>
+        <?= Html::a('Update', ['update', 'idtrans'=>$model->idtrans], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'idtrans'=>$model->idtrans], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Are you sure you want to delete this item?',
+                'method' => 'post',
+            ],
+        ]) ?>
+		<?= Html::a('Insert', ['create'], ['class' => 'btn btn-insert']) ?>
+    </p>
+
+    <?= DetailView::widget([
+        'model' => $model,
+        'attributes' => [
+		'idtrans',
+		'nometrans',
+		
+        ],
+    ]) ?>
+
+</div>
+
+<?php Yii::$app->view->on(View::EVENT_END_BODY, function () {
+    echo ('<span class="ultagg">Modificato da <b>'. $this->params['model']['utente'] . '</b> in data <b>' . $this->params['model']['ultagg'] . '</b></span>');
+});
+?>
+
