@@ -9,7 +9,8 @@ use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
-
+use yii\web\View;
+use common\components\NewNav;
 AppAsset::register($this);
 
 //Fix for closing icon (x) not showing up in dialog
@@ -73,15 +74,16 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
         ['label' => 'About', 'url' => ['/site/about'],'forall'=>'true'],
         ['label' => 'Contact', 'url' => ['/site/contact'],'forall'=>'true'],
     ];
-    $menuItems = \frontend\controllers\BaseController::menu($menuItems);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
     } else {
         $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/abilitazione/profilo/view','IdProfilo' => Yii::$app->user->identity->profilo->IdProfilo]];        
         $menuItems[] = ['label' => 'Utenti', 'url' => ['/user/lista']];        
+        $menuItems[] = ['label' => 'Permessi', 'url' => ['/abilitazione/ztrans/lista']];         
     }
+    $menuItems = \frontend\controllers\BaseController::menu($menuItems);
 
-    echo Nav::widget([
+    echo NewNav::widget([
         'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
         'items' => $menuItems,
     ]);
