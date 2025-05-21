@@ -281,7 +281,7 @@ class BaseController  extends Controller{
                     $trovato = true;
             else {
                 $gruppi = Yii::$app->session['gruppi'];
-                if ( $gruppi == null) {
+                if ( $gruppi == null && !empty(Yii::$app->user->identity)) {
                     $gruppi = \Yii::$app->user->identity->getzGruppi();
                     Yii::$app->session['gruppi'] = $gruppi;
                 }
