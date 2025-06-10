@@ -60,7 +60,7 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => \yii\web\ErrorAction::class,
-                'layout' => 'mainerror' //use error.php in views/layouts
+                'layout' => 'mainerror' // il layout in caso di UserExcepotion viene impostato qui
             ],
             'captcha' => [
                 'class' => \yii\captcha\CaptchaAction::class,
