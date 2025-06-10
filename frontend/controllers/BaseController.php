@@ -74,13 +74,11 @@ class BaseController  extends Controller{
     public function beforeAction($action): bool {
         if (!parent::beforeAction($action)) { return false; }
         if ($this->devoControllarePermesso($action)) {
-            if ( Yii::$app->session == null ) {
-                $this->layout = 'main';
+            if ( Yii::$app->session == null || Yii::$app->user->isGuest) {
                 throw new UserException("Non esiste una sessione per l'utente. Eseguire il login.");
             }
             $gruppi = Yii::$app->session['gruppi'];
             if ( $gruppi == null ) {
-                $this->layout = 'main';
                 throw new UserException("Non esiste una sessione per l'utente o non trovo i permessi. Eseguire il login.");
             }
             if ( !empty($gruppi['admin'])) {
@@ -90,7 +88,6 @@ class BaseController  extends Controller{
             $trovato = false;
             $action_name = '/' . $this->id . '/' . $action->id;
             if ( empty($gruppi[$action_name])) {
-                $this->layout = 'main';
                 throw new UserException("Non si hanno i permessi per accedere a questa funzione.");                
             }
         }
