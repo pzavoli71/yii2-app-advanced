@@ -183,7 +183,16 @@ class BaseModel extends \yii\db\ActiveRecord {
             }
             return true;
           }
-          
+
+            public function afterFind() { 
+                parent::afterFind(); // Converti da 11.00 (DB) a 11,00 (form) 
+                if ( isset($this->decimal_columns) ) {
+                    foreach ($this->decimal_columns as $nomecol) {
+                        $this[$nomecol] = \Yii::$app->formatter->asDecimal($this[$nomecol], 2);     
+                    }               
+                }
+            }   
+    
           protected function validaDaStringaAData($nomeparametro, $valore) {
             if ( $valore === null || strlen($valore) == 0)
                 return true;
