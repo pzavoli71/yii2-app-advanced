@@ -74,7 +74,7 @@ class BaseModel extends \yii\db\ActiveRecord {
             return false;
         }
         
-          protected function convertiNumero($numero, $bDecimal = false) {
+          public static function convertiNumero($numero, $bDecimal = false) {
             if (!$bDecimal) {
                 $conv = str_replace('.', '', $numero);
                 $conv = str_replace(',', '.', $conv);  
@@ -93,7 +93,7 @@ class BaseModel extends \yii\db\ActiveRecord {
             return $conv;              
           }
           
-          protected function convertiBoolInIntero($valore) {
+          public static function convertiBoolInIntero($valore) {
                 if ($valore == null)  {
                     return null;
                 }
@@ -123,7 +123,7 @@ class BaseModel extends \yii\db\ActiveRecord {
               return $conv;
           }
           
-          protected function convertiStringToDate($valore) {
+          public static function convertiStringToDate($valore) {
               if ( $valore == null || $valore == '')
                   return null;
               $format = \common\config\db\mysql\ColumnSchema::$saveDateFormat;
