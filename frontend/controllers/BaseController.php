@@ -329,7 +329,10 @@ class BaseController  extends Controller{
         return date('Y-m-d H:i:s');
     }
     
-      
+    public static function getTodayDate() {
+        return date('Y-m-d');
+    }
+          
     public function getCookieConsent() {
         $session = Yii::$app->session;
         if (isset($session['cookieconsent'])) {
