@@ -38,7 +38,7 @@ if (class_exists('yii\debug\Module')) {
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
 	);?>    
     <?php $this->registerJs(
-    "setTimeout(function() {if (AppGlob) AppGlob.resize2(window)},100);",
+    "setTimeout(function() {if (AppGlob) AppGlob.resize2(window)},300);",
     View::POS_READY,
     'resize-page-script'
     );?>
@@ -69,11 +69,6 @@ if (class_exists('yii\debug\Module')) {
         <?= $content ?>
 </main>
 
-
-
-<!--script language="javascript">
-    setTimeout(function() {if (AppGlob) AppGlob.resize2(window)},300);
-</script-->
 <?php $this->endBody() ?>
 </body>
 </html>
