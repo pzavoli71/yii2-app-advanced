@@ -348,7 +348,8 @@ function AppGlob() {
 			 if ( h > minHeight)
 				 minHeight = h;
 		  });
-		  $(frameNode).height(minHeight);
+		  if ($(frameNode).hasClass('frame-form') )
+			$(frameNode).height(minHeight+15);
 		  /*if ( $(frameNode).hasClass('frame-container')) {
 			  $(frameNode).width('100%');
 		  } else if (! $(frameNode).hasClass('frame-container')) {
