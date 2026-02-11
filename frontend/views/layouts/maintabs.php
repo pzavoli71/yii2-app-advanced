@@ -71,7 +71,7 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
 <body class="d-flex flex-column h-100">
 <?php $this->beginBody() ?>
 
-<header id="header" class="fixed-top">
+<header id="header" ><!--class="fixed-top"-->
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
