@@ -232,16 +232,16 @@ td.relazione.closed {
         width: 99%;
         margin: 0px 0 1px 0;
         box-shadow: 0px 0px 12px 0px #bdb4b4;  
-*/
+*/        
         display: flex;
-        border: 1px solid #000000;
         padding: 0px;
         width: 100%;
         margin: 0px;
-        box-shadow: 0px 0px 10px 0px #000000;
+        box-shadow: 0px 0px 5px 0px #000000;
         flex-direction: row;
         justify-content: space-around;
         flex-wrap: wrap;
+        margin-bottom: 10px;        
     }
     .tabLista:not([class*=nomobile]) tr[id^=RigaRel] {
         display:block;
@@ -270,16 +270,16 @@ td.relazione.closed {
         display: block;
         font-weight: bold;
         border-radius: 5px;
-        color: #5b5b5b;
-        background-color: #f5efef;
+        color: #ffffff;
+        background-color: #737373;
         width: 100%;
-        padding: 3px;        
+        padding: 3px;     
     }
     .tabLista:not([class*=nomobile]) td img {
         max-width:90%;
     }
     .tabLista:not([class*=nomobile]) td:not(:empty) {
-        min-height: 17px;
+        min-height: 0px;
         border:1px solid #e7e7e7;
     }    
     .imgdoc {
