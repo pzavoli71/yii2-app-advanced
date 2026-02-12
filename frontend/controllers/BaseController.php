@@ -86,7 +86,7 @@ class BaseController  extends Controller{
             }
             
             $trovato = false;
-            $action_name = '/' . $this->id . '/' . $action->id;
+            $action_name = $this->id . '/' . $action->id;
             if ( empty($gruppi[$action_name])) {
                 throw new UserException("Non si hanno i permessi per accedere a questa funzione.");                
             }
