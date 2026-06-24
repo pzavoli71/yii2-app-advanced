@@ -17,6 +17,13 @@
  *   .single-tab[data-tab]        -> tab della Single.
  *   .single-rel[data-reload-url] -> blocco relazione ricaricabile.
  *   .single-rel-refresh          -> ricarica il corpo della relazione.
+ *
+ * Aggiornamento del sottostante alla chiusura della modale:
+ *   - modifica  -> ricarica la sola riga d'origine (tr[data-key]) nella lista;
+ *   - inserimento / cancellazione -> ricarica l'intera lista (.single-lista);
+ *   - se la modale proviene da un blocco relazione (.single-rel) -> aggiorna
+ *     quella relazione invece della lista.
+ * Richiede: righe lista con data-key e actionLista ajax-aware (renderPartial).
  */
 (function ($) {
     'use strict';
@@ -96,16 +103,94 @@
         return { overlay: $overlay, body: $body };
     }
 
+    // Chiude la modale e, in base all'esito registrato, aggiorna cio' che sta
+    // sotto: la riga modificata, l'intera lista, o il blocco relazione d'origine.
     function closeModal($overlay) {
+        applyOutcome($overlay);
         $overlay.remove();
         if ($('.single-modal-overlay').length === 0) {
             $('body').removeClass('single-modal-open');
         }
     }
 
-    function openModal(url, data, method) {
+    // url della pagina lista corrente (preserva eventuali filtri in query string).
+    function listUrl() {
+        return window.location.href;
+    }
+
+    // Ricarica via ajax l'intera lista sottostante (inserimento/cancellazione).
+    function reloadList() {
+        var $list = $('.single-lista').first();
+        if (!$list.length) {
+            window.location.reload();
+            return;
+        }
+        $.ajax({ url: listUrl(), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .done(function (html) {
+                var $new = $('<div>').html(html).find('.single-lista').first();
+                if ($new.length) { $list.replaceWith($new); } else { window.location.reload(); }
+            })
+            .fail(function () { window.location.reload(); });
+    }
+
+    // Ricarica via ajax la SOLA riga indicata (modifica), preservando il resto
+    // della lista (scroll, altre relazioni espanse).
+    function reloadRow($row) {
+        var key = $row.data('key');
+        if (key === undefined || key === null) {
+            reloadList();
+            return;
+        }
+        $.ajax({ url: listUrl(), headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .done(function (html) {
+                var $new = $('<div>').html(html).find('.single-lista tr[data-key="' + key + '"]').first();
+                $row.next('.single-rel-row').remove(); // l'eventuale espansione e' ora obsoleta
+                if ($new.length) { $row.replaceWith($new); } else { reloadList(); }
+            })
+            .fail(function () { reloadList(); });
+    }
+
+    // Ricarica il corpo di un blocco relazione (.single-rel) dal suo reload-url.
+    function refreshRel($rel) {
+        var url = $rel.data('reload-url');
+        if (!url) { return; }
+        var $body = $rel.find('.single-rel-body').first();
+        $body.html('<div class="single-loading"><i class="fa fa-spinner fa-spin"></i></div>');
+        $.ajax({ url: url, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .done(function (html) { $body.html(html); });
+    }
+
+    // Applica l'esito registrato sulla modale a cio' che sta sotto.
+    function applyOutcome($overlay) {
+        var outcome = $overlay.data('outcome');
+        if (!outcome) { return; }
+        var $rel = $overlay.data('sourceRel');
+        var $row = $overlay.data('sourceRow');
+        if ($rel && $rel.length) { refreshRel($rel); return; }
+        if (outcome === 'update' && $row && $row.length) { reloadRow($row); return; }
+        reloadList(); // inserimento, o modifica senza riga d'origine nota
+    }
+
+    // Apre una modale memorizzando il contesto d'origine (riga lista o relazione)
+    // e l'url di apertura (per distinguere create da update al salvataggio).
+    function openModal(url, $from) {
         var m = buildModal();
-        loadInto(m.body, url, data, method);
+        m.overlay.data('openUrl', url);
+        if ($from && $from.length) {
+            var $cur = $from.closest('.single-modal-overlay');
+            var $rel = $from.closest('.single-rel');
+            if ($rel.length) {
+                m.overlay.data('sourceRel', $rel);
+            } else if ($cur.length) {
+                // eredita il contesto dalla modale da cui si apre
+                m.overlay.data('sourceRel', $cur.data('sourceRel') || null);
+                m.overlay.data('sourceRow', $cur.data('sourceRow') || null);
+            } else {
+                var $tr = $from.closest('.single-grid tr');
+                if ($tr.length) { m.overlay.data('sourceRow', $tr); }
+            }
+        }
+        loadInto(m.body, url);
         return m;
     }
 
@@ -119,7 +204,7 @@
         e.preventDefault();
         var url = $(this).data('url');
         if (url) {
-            openModal(url);
+            openModal(url, $(this));
         }
     });
 
@@ -152,11 +237,34 @@
     });
 
     // --- Submit del form in ajax (resta nella modale corrente) -------------
+    // Se la risposta non contiene piu' un form, il salvataggio e' riuscito:
+    // registro l'esito (create/update) sulla modale; l'aggiornamento di cio'
+    // che sta sotto avverra' alla chiusura della modale.
     $(document).on('submit', 'form[data-single-form]', function (e) {
         e.preventDefault();
         var $form = $(this);
+        var $overlay = $form.closest('.single-modal-overlay');
+        var $container = targetContainer($form);
         var url = $form.attr('action') || window.location.href;
-        loadInto(targetContainer($form), url, $form.serialize(), 'POST');
+        var openUrl = ($overlay.data('openUrl') || url) + '';
+        var isCreate = /create/i.test(openUrl);
+
+        showSpinner($container);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: $form.serialize(),
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        }).done(function (html) {
+            $container.html(html);
+            $container.trigger('single:loaded');
+            var ancoraForm = $container.find('form[data-single-form]').length > 0;
+            if (!ancoraForm) {
+                $overlay.data('outcome', isCreate ? 'create' : 'update');
+            }
+        }).fail(function (xhr) {
+            $container.html('<div class="single-error">Errore: ' + xhr.status + ' ' + xhr.statusText + '</div>');
+        });
     });
 
     // --- Delete in ajax ----------------------------------------------------
@@ -180,8 +288,11 @@
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
         }).done(function (res) {
             if (res && res.success) {
-                closeModal($a.closest('.single-modal-overlay'));
-                window.location.reload();
+                var $overlay = $a.closest('.single-modal-overlay');
+                var $rel = $overlay.data('sourceRel');
+                $overlay.removeData('outcome'); // evito doppio aggiornamento in closeModal
+                closeModal($overlay);
+                if ($rel && $rel.length) { refreshRel($rel); } else { reloadList(); }
             } else {
                 window.alert((res && res.message) || 'Cancellazione non riuscita.');
             }
@@ -241,19 +352,7 @@
     // --- Refresh del corpo di una relazione --------------------------------
     $(document).on('click', '.single-rel-refresh', function (e) {
         e.preventDefault();
-        var $rel = $(this).closest('.single-rel');
-        var url = $rel.data('reload-url');
-        if (!url) {
-            return;
-        }
-        var $body = $rel.find('.single-rel-body');
-        $body.html('<div class="single-loading"><i class="fa fa-spinner fa-spin"></i></div>');
-        $.ajax({
-            url: url,
-            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        }).done(function (html) {
-            $body.html(html);
-        });
+        refreshRel($(this).closest('.single-rel'));
     });
 
 })(jQuery);
