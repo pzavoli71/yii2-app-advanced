@@ -7,8 +7,11 @@
  * sovrappone a quella sottostante.
  *
  * Convenzioni (markup generato dai fogli XSLT in generatori/):
- *   a.single-open[data-url]      -> apre la Single (view/create/update) in una
- *                                   nuova modale centrata.
+ *   a.single-open[data-url]      -> apre la Single (view/create/update). Dalla
+ *                                   lista o da un blocco relazione apre una
+ *                                   NUOVA modale; da dentro una modale (es.
+ *                                   view->modifica) SOSTITUISCE il contenuto
+ *                                   della modale corrente (niente impilamento).
  *   form[data-single-form]       -> submit in ajax; la risposta sostituisce il
  *                                   contenuto della modale corrente.
  *   a.single-delete[data-url]    -> delete in ajax (POST + CSRF); JSON di
@@ -203,9 +206,22 @@
     $(document).on('click', 'a.single-open', function (e) {
         e.preventDefault();
         var url = $(this).data('url');
-        if (url) {
-            openModal(url, $(this));
+        if (!url) { return; }
+        var $from = $(this);
+        var $overlay = $from.closest('.single-modal-overlay');
+
+        // Dentro una modale e NON dentro un blocco relazione: e' una transizione
+        // sullo stesso record (es. view -> modifica -> nuovo). Sostituisco il
+        // contenuto della modale corrente invece di impilarne una seconda.
+        // (I link dentro .single-rel restano un drill-down: aprono una modale
+        //  nuova sopra, per i record collegati.)
+        if ($overlay.length && !$from.closest('.single-rel').length) {
+            $overlay.data('openUrl', url);
+            loadInto($overlay.find('.single-modal-body').first(), url);
+            return;
         }
+
+        openModal(url, $from);
     });
 
     // --- Chiusura modale ---------------------------------------------------
