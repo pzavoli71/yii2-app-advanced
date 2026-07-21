@@ -52,6 +52,26 @@ class m130524_201442_init extends Migration
             'utente' => $this->string(45)->notNull()->defaultValue(''),
         ], $tableOptions);
         $this->insert('{{%ztrans}}', ['idtrans'=>1, 'nometrans'=>'admin']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>2, 'nometrans'=>'abilitazione/ztrans/lista']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>3, 'nometrans'=>'abilitazione/ztrans/create']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>4, 'nometrans'=>'abilitazione/ztrans/delete']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>5, 'nometrans'=>'abilitazione/ztrans/update']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>6, 'nometrans'=>'abilitazione/ztrans/view']);
+
+        $this->insert('{{%ztrans}}', ['idtrans'=>7, 'nometrans'=>'abilitazione/zutgr/index']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>8, 'nometrans'=>'abilitazione/zutgr/view']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>9, 'nometrans'=>'abilitazione/zutgr/create']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>10, 'nometrans'=>'abilitazione/zutgr/update']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>11, 'nometrans'=>'abilitazione/zutgr/delete']);
+
+        $this->insert('{{%ztrans}}', ['idtrans'=>12, 'nometrans'=>'abilitazione/zpermessi/index']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>13, 'nometrans'=>'abilitazione/zpermessi/view']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>14, 'nometrans'=>'abilitazione/zpermessi/create']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>15, 'nometrans'=>'abilitazione/zpermessi/update']);
+        $this->insert('{{%ztrans}}', ['idtrans'=>16, 'nometrans'=>'abilitazione/zpermessi/delete']);
+
+        
+        
 
         $this->createTable('{{%zutgr}}', [
             'idutgr' => $this->primaryKey()->append('AUTO_INCREMENT'),
@@ -87,6 +107,22 @@ class m130524_201442_init extends Migration
         $this->addForeignKey('fix_zpermessi_gruppo', '{{%zpermessi}}', 'idgruppo', '{{%zgruppo}}' , 'idgruppo');
 
         $this->insert('{{%zpermessi}}', ['idtrans'=>1, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>2, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>3, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>4, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>5, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>6, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>7, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>8, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>9, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>10, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>11, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>12, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>13, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>14, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>15, 'idgruppo'=>1]);
+        $this->insert('{{%zpermessi}}', ['idtrans'=>16, 'idgruppo'=>1]);
+        
         
         $this->createTable('session', [
             'id' => $this->char(40)->notNull(),
