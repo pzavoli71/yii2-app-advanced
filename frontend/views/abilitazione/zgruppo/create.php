@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\abilitazione\zgruppo $model */
 
-$this->title = 'Crea un nuovo gruppo';
+$this->title = 'Create zgruppo';
 
 \yii\web\YiiAsset::register($this);
 ?>
