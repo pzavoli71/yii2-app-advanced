@@ -114,11 +114,7 @@ class ZpermessiController extends BaseController
 			}
 		} else {
 			// Mettere qui eventuali valori da assegnare a colonne calcolate
-            if ( !empty($this->request->queryParams['idtrans']))
-                $model->idtrans = $this->request->queryParams['idtrans'];            
-            if ( !empty($this->request->queryParams['idgruppo']))
-                $model->idgruppo = $this->request->queryParams['idgruppo'];            
-            
+			//$model->IdObiettivo = $this->request->queryParams['IdObiettivo'];            
 						
 			$model->loadDefaultValues();
 		}
@@ -181,9 +177,15 @@ class ZpermessiController extends BaseController
 	public function actionDelete($idpermessi)
 	{
 		$model = $this->findModel($idpermessi);
+        /* Controllo se ci sono relazioni collegate ed emetto errore
+		if (count($model->notaopzione) > 0) {
+			Yii::$app->session->setFlash('success', 'Ci sono delle note collegate. Impossibile cancellare.');            
+    		return $this->redirect(['view','idpermessi'=>$model->idpermessi]);   
+        }*/		
 		if ( $model->delete()) {
 			Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
-			return $this->redirect(['create']);
+			return $this->render('/generics/view',[]);   
+			//return $this->redirect(['create']);
 		}			
 		return $this->redirect(['view','idpermessi'=>$model->idpermessi]);   
 	}
@@ -212,6 +214,7 @@ class ZpermessiController extends BaseController
 	public function actionReloadrelazione($nomepdc, $nomerelaz, $idpermessi, $DaSingle = false)
 	{
 		$searchModel = new zpermessiSearch();
+		
 		if ( $DaSingle) {
 			return $this->renderPartial('viewtabs', [
 				'model' => $searchModel,
