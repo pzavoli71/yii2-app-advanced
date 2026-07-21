@@ -18,8 +18,6 @@ use kartik\datecontrol\DateControl;
         }    
     </style>
 
-    <fieldset>
-        <legend>Inserisci il filtro</legend>
 	<?php $form = ActiveForm::begin([
 		//'enableAjaxValidation' => true,
         'action' => ['lista'],
@@ -27,7 +25,7 @@ use kartik\datecontrol\DateControl;
 	]); ?>
 	
 	
-	<?= $form->field($model,'idtrans')->hiddenInput() ?>	
+	<?= $form->field($model,'idtrans') ?>	
 		
 		<?= $form->field($model,'nometrans')->textInput() ?>
 		
@@ -38,6 +36,5 @@ use kartik\datecontrol\DateControl;
     </div>
 
     <?php ActiveForm::end(); ?>
-	
-	</fieldset>
+
 </div>
