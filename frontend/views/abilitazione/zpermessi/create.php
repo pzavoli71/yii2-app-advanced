@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\abilitazione\zpermessi $model */
 
-$this->title = 'Create un nuovo permesso';
+$this->title = 'Collega una transazione ad un gruppo';
 
 \yii\web\YiiAsset::register($this);
 ?>
