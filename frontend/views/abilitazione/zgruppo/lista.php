@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\web\View;
 
-$this->title = 'Elenco gruppi di utenti';
+$this->title = 'Gruppi di utenti';
 $this->registerJsFile(
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
@@ -38,12 +38,12 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
         $models = $dataProvider->getModels();
         $model = $models[0];
 				
-        if ($nomerelaz == "zgruppo_zpermessi") {
-            Relazionezgruppo_zpermessi($model, $rigapos, true);
-		}
-				
         if ($nomerelaz == "zgruppo_zutgr") {
             Relazionezgruppo_zutgr($model, $rigapos, true);
+		}
+				
+        if ($nomerelaz == "zgruppo_zpermessi") {
+            Relazionezgruppo_zpermessi($model, $rigapos, true);
 		}
 		
 		resizeAll();
@@ -75,6 +75,10 @@ function apriRigaRelazioni(chiave, nomepdc, riga, rigarel) {
 	var dati = {};
 	if ( nome == 'abilitazione\\zgruppo') {
 		dati['idgruppo'] = chiavi[0];
+	} else if (nome == 'zutgr') {
+		dati['idutgr'] = chiavi[0];
+	} else if (nome == 'zpermessi') {
+		dati['idpermessi'] = chiavi[0];
 
 	}
 	// Scommentare per fare il caricamento manuale ogni volta che si clicca sul + di questa relazione
@@ -119,6 +123,10 @@ function caricaRelazione(obj) {
 	}
 	if ( nome == 'abilitazione\\zgruppo') {
 		dati['idgruppo'] = chiavi[0];
+	} else if (nome == 'zutgr') {
+		dati['idutgr'] = chiavi[0];
+	} else if (nome == 'zpermessi') {
+		dati['idpermessi'] = chiavi[0];
 
 	}
 	<?php $currentcontroller = Yii::$app->controller->id; ?>
@@ -234,7 +242,7 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     ]) ?-->
 
     <p style="margin-bottom:0px; margin-top:5px">
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'abilitazione/zgruppo/create', [], 'Inserisci un nuovo gruppo','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'abilitazione/zgruppo/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		<!--a class="btn btn-success" onclick="apriForm(this, '/index.php?r=quiz/create')" href="javascript:void(0)" title="Update" aria-label="Update" data-pjax="0"><span class="fas fa-plus" aria-hidden="true"></span>Create zgruppo</a-->	
     </p>
 
@@ -314,28 +322,28 @@ function Relazionizgruppo($riga, $rigapos) { ?>
 	<tr id="RigaRelzgruppo_<?=$rigapos?>" class="<?=fmod($rigapos,2) == 1?'rigaDispari':'rigaPari'; ?>">
     <td colspan="100" class="closed tdRelazione" >
 		
-    <div style="margin-left:20px;" id="divRel_zgruppo_zpermessi_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->idgruppo?>" nomepdc="abilitazione\zgruppo" nomerelaz="zgruppo_zpermessi">
-		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
-			<i class="fa fa-sync"></i>
-		</a>
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un permesso|fa-plus', 'abilitazione/zpermessi/create', ['idgruppo'=>$riga->idgruppo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
-		&#xA0;
-		<span class="titolo1">Permessi</span>
-		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
-		</div>
-		<?php Relazionezgruppo_zpermessi($riga,$rigapos) ?>
-		</div>
-				
     <div style="margin-left:20px;" id="divRel_zgruppo_zutgr_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->idgruppo?>" nomepdc="abilitazione\zgruppo" nomerelaz="zgruppo_zutgr">
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un utente|fa-plus', 'abilitazione/zutgr/create', ['idgruppo'=>$riga->idgruppo], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un utente|fa-plus', 'abilitazione/zutgr/create', [], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		&#xA0;
-		<span class="titolo1">Utenti</span>
+		<span class="titolo1">Utenti del gruppo</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
 		</div>
 		<?php Relazionezgruppo_zutgr($riga,$rigapos) ?>
+		</div>
+				
+    <div style="margin-left:20px;" id="divRel_zgruppo_zpermessi_<?=$rigapos?>" class="divRelazione" chiave="<?=$riga->idgruppo?>" nomepdc="abilitazione\zgruppo" nomerelaz="zgruppo_zpermessi">
+		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
+			<i class="fa fa-sync"></i>
+		</a>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un permesso|fa-plus', 'abilitazione/zpermessi/create', [], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+		&#xA0;
+		<span class="titolo1">Transazioni consentite</span>
+		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
+		</div>
+		<?php Relazionezgruppo_zpermessi($riga,$rigapos) ?>
 		</div>
 		
 
@@ -344,21 +352,6 @@ function Relazionizgruppo($riga, $rigapos) { ?>
 <?php } ?>
 
 
-		
-<?php 
-function Relazionezgruppo_zpermessi($riga, $rigapos, $loadable = false) { ?>
-	<div class="divLista">
-	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
-	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListazgruppo_zpermessi_<?=$rigapos?>" nomepdc="zgruppo">
-		<?= IntestaTabellazpermessi()?>
-		<?php $p=1; if ( $loadable)
-			foreach ($riga->zpermessi as $value) {
-				Recordzpermessi($value,$p);
-				$p++;
-			}?>		
-	</table>
-	</div>
-<?php } ?>	
 		
 <?php 
 function Relazionezgruppo_zutgr($riga, $rigapos, $loadable = false) { ?>
@@ -375,14 +368,67 @@ function Relazionezgruppo_zutgr($riga, $rigapos, $loadable = false) { ?>
 	</div>
 <?php } ?>	
 		
+<?php 
+function Relazionezgruppo_zpermessi($riga, $rigapos, $loadable = false) { ?>
+	<div class="divLista">
+	<!--xsl:call-template name="PaginatoreRelazione"><xsl:with-param name="caricaFunction">caricaRelazione(this)</xsl:with-param></xsl:call-template> -->
+	<table border="0" cellpadding="2" cellspacing="0" class="tabLista" id="tabListazgruppo_zpermessi_<?=$rigapos?>" nomepdc="zgruppo">
+		<?= IntestaTabellazpermessi()?>
+		<?php $p=1; if ( $loadable)
+			foreach ($riga->zpermessi as $value) {
+				Recordzpermessi($value,$p);
+				$p++;
+			}?>		
+	</table>
+	</div>
+<?php } ?>	
+		
+
+<?php 
+function IntestaTabellazutgr() { ?>
+<tr>
+<th style="min-width:180px"></th>
+
+     <th data-nomecol="idutgr" >idutgr</th>
+
+     <th data-nomecol="idgruppo" >gruppo</th>
+
+</tr>
+<?php } ?>	
+
+
+<!-- ============================================ -->
+<!--    Righe tabella                             -->
+<!-- ============================================ -->
+<?php 
+function Recordzutgr($rigarel, $pos) { ?>
+
+   <tr id='Rigazutgr_<?=$pos?>' chiave='<?=$rigarel->idutgr?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
+		<td class="tdbottonifrontali"><?= showToggleInrelations($rigarel,$pos,true) ?>	
+			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'abilitazione/zutgr/view', ['idutgr'=>$rigarel->idutgr], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+		</td>
+
+		<td><span class="headcol">idutgr:</span><?=$rigarel->idutgr?></td>
+
+		<td><span class="headcol">id:</span><?=$rigarel->id?><br/><?=$rigarel->user->username ?></td>
+
+		<!--td class="tdbottoni"-->
+			<!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
+		
+		<!--/td-->
+		</tr >
+
+	<!-- Relazionizutgr($rigarel,$pos)-->
+<?php } ?>	
+
+		
 
 <?php 
 function IntestaTabellazpermessi() { ?>
 <tr>
 <th style="min-width:180px"></th>
 
-
-     <th data-nomecol="permesso" >permesso</th>
+     <th data-nomecol="idpermessi" >idpermessi</th>
 
      <th data-nomecol="idtrans" >idtrans</th>
 
@@ -400,9 +446,10 @@ function Recordzpermessi($rigarel, $pos) { ?>
 		<td class="tdbottonifrontali"><?= showToggleInrelations($rigarel,$pos,true) ?>	
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'abilitazione/zpermessi/view', ['idpermessi'=>$rigarel->idpermessi], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>
-		<td><span class="headcol">permesso:</span><?=$rigarel->permesso?></td>
 
-		<td><span class="headcol">idtrans:</span><?=$rigarel->idtrans?><?=$rigarel->ztrans->nometrans ?></td>
+		<td><span class="headcol">idpermessi:</span><?=$rigarel->idpermessi?></td>
+
+		<td><span class="headcol">idtrans:</span><?=$rigarel->idtrans?><br/><?=$rigarel->ztrans->nometrans ?></td>
 
 		<!--td class="tdbottoni"-->
 			<!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
@@ -411,40 +458,5 @@ function Recordzpermessi($rigarel, $pos) { ?>
 		</tr >
 
 	<!-- Relazionizpermessi($rigarel,$pos)-->
-<?php } ?>	
-
-		
-
-<?php 
-function IntestaTabellazutgr() { ?>
-<tr>
-<th style="min-width:180px"></th>
-
-     <th data-nomecol="id" >id</th>
-
-</tr>
-<?php } ?>	
-
-
-<!-- ============================================ -->
-<!--    Righe tabella                             -->
-<!-- ============================================ -->
-<?php 
-function Recordzutgr($rigarel, $pos) { ?>
-
-   <tr id='Rigazutgr_<?=$pos?>' chiave='<?=$rigarel->idutgr?>' class="<?=fmod($pos,2) == 1?'rigaDispari':'rigaPari'; ?>">
-		<td class="tdbottonifrontali"><?= showToggleInrelations($rigarel,$pos,true) ?>	
-			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'abilitazione/zutgr/view', ['idutgr'=>$rigarel->idutgr], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
-		</td>
-
-		<td><span class="headcol">id:</span><?=$rigarel->id?><?=$rigarel->user->username ?></td>
-
-		<!--td class="tdbottoni"-->
-			<!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
-		
-		<!--/td-->
-		</tr >
-
-	<!-- Relazionizutgr($rigarel,$pos)-->
 <?php } ?>	
 
