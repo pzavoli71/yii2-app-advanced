@@ -35,6 +35,10 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            // 2. Aggiungi la regola del CAPTCHA obbligatoria per la registrazione
+            ['verifyCode', 'captcha'],            
+
         ];
     }
 
