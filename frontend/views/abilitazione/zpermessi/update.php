@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\abilitazione\zpermessi . $model */
 
-$this->title = 'Update permesso:' . $model->idpermessi;
+$this->title = 'Modifica transazione:' . $model->idpermessi;
 
 \yii\web\YiiAsset::register($this);
 ?>
