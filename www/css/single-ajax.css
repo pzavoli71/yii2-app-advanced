@@ -1,0 +1,183 @@
+/* single-ajax.css - stile per le Single aperte come modale ajax centrata */
+
+/* --- Modale ----------------------------------------------------------- */
+.single-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    display: flex;
+    align-items: center;       /* centratura verticale */
+    justify-content: center;   /* centratura orizzontale */
+    padding: 40px 16px;
+    z-index: 1050;
+    overflow-y: auto;          /* scroll se il form e' piu' alto della finestra */
+}
+
+/* Modali impilate: ognuna leggermente sopra la precedente */
+.single-modal-overlay ~ .single-modal-overlay {
+    z-index: 1060;
+}
+
+.single-modal-dialog {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    margin: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
+    animation: single-modal-in .15s ease-out;
+}
+
+@keyframes single-modal-in {
+    from { transform: translateY(-12px); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
+}
+
+.single-modal-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    border: none;
+    background: transparent;
+    font-size: 26px;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.single-modal-close:hover {
+    color: #222;
+}
+
+.single-modal-body {
+    padding: 20px;
+}
+
+/* Blocca lo scroll della pagina mentre una modale e' aperta */
+body.single-modal-open {
+    overflow: hidden;
+}
+
+/* Dentro la modale la Single non ha bordo/ombra proprie (le ha il dialog) */
+.single-modal-body .single {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.single {
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+    padding: 12px 16px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
+}
+
+.single-toolbar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+/* Tab */
+.single-tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 2px solid #d0d7de;
+    margin-bottom: 12px;
+}
+
+.single-tab {
+    padding: 6px 14px;
+    text-decoration: none;
+    color: #444;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+}
+
+.single-tab.active {
+    background: #f5f7fa;
+    border-color: #d0d7de;
+    font-weight: 600;
+    color: #111;
+}
+
+.single-panel {
+    display: none;
+}
+
+.single-panel.active {
+    display: block;
+}
+
+/* Toggle "+" di espansione relazioni nella lista */
+.single-rel-toggle {
+    margin-right: 6px;
+    color: #0b7;
+    text-decoration: none;
+}
+
+.single-rel-toggle:hover {
+    color: #095;
+}
+
+/* Sotto-riga con le relazioni espanse */
+.single-rel-row > td {
+    background: #f6f8fa;
+    padding: 10px 14px;
+}
+
+.single-rel-expand {
+    /* livello di rientro per evidenziare l'annidamento */
+    border-left: 3px solid #cdd7e0;
+    padding-left: 12px;
+}
+
+.single-rel-blocks > .single-rel + .single-rel {
+    margin-top: 14px;
+}
+
+/* Relazioni */
+.single-rel-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.single-rel-title {
+    font-weight: 600;
+}
+
+.single-rel-table,
+.single-grid {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.single-rel-table th,
+.single-rel-table td {
+    border: 1px solid #e1e4e8;
+    padding: 4px 8px;
+    text-align: left;
+}
+
+.single-grid-actions,
+.single-rel-actions {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Stati */
+.single-loading,
+.single-error {
+    padding: 16px;
+    color: #666;
+}
+
+.single-error {
+    color: #b00020;
+}
