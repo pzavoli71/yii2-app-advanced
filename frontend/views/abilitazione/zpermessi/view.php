@@ -13,7 +13,7 @@ $this->params['model'] = $model;
 //$this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="nomobile zpermessi-view">
+<div class="zpermessi-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -32,9 +32,10 @@ $this->params['model'] = $model;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-		['label'=>'Gruppo', 'value'=>$model->zgruppo->nomegruppo],
-		['label'=>'Transazione', 'value'=>$model->ztrans->nometrans],
-		'permesso',
+		'idpermessi',
+                ['label'=>'gruppo','value'=>$model->zgruppo->nomegruppo],
+
+                ['label'=>'Transazione','value'=>$model->ztrans->nometrans],
 		
         ],
     ]) ?>
