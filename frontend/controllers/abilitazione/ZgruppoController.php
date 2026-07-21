@@ -3,7 +3,7 @@
 namespace frontend\controllers\abilitazione;
 
 use common\models\abilitazione\zgruppo;
-use common\models\abilitazione\ZgruppoSearch;
+use common\models\abilitazione\zgruppoSearch;
 use yii\web\Controller;
 use frontend\controllers\BaseController;
 use yii\web\NotFoundHttpException;
@@ -60,8 +60,7 @@ class ZgruppoController extends BaseController
 	*/
 	public function actionLista()
 	{
-        $this->layout = "main";
-		$searchModel = new ZgruppoSearch();
+		$searchModel = new zgruppoSearch();
 		$dataProvider = $searchModel->search($this->request->queryParams);
 
 		return $this->render('lista', [
@@ -72,7 +71,7 @@ class ZgruppoController extends BaseController
 
 	/**
 	* Displays a single zgruppo model.
-	* @param int $idgruppo Id Doc Obiettivo
+	* @param int $IdGruppo Id Doc Obiettivo
 	* @return string
 	* @throws NotFoundHttpException if the model cannot be found
 	*/
@@ -107,7 +106,7 @@ class ZgruppoController extends BaseController
 				// }
 				if ($model->save()) {
 					//$transaction->commit();
-					return $this->redirect(['view', 'idgruppo'=>$model->idgruppo]);
+					return $this->redirect(['view', 'IdGruppo'=>$model->IdGruppo]);
 				//} else {
 				//    $transaction->rollBack();
 				//    return false;
@@ -133,7 +132,7 @@ class ZgruppoController extends BaseController
 	/**
 	* Updates an existing zgruppo model.
 	* If update is successful, the browser will be redirected to the 'view' page.
-	* @param int $idgruppo Id Doc Obiettivo
+	* @param int $IdGruppo Id Doc Obiettivo
 	* @return string|\yii\web\Response
 	* @throws NotFoundHttpException if the model cannot be found
 	*/
@@ -171,16 +170,22 @@ class ZgruppoController extends BaseController
 	/**
 	* Deletes an existing zgruppo model.
 	* If deletion is successful, the browser will be redirected to the 'index' page.
-	* @param int $idgruppo Id 
+	* @param int $IdGruppo Id 
 	* @return \yii\web\Response
 	* @throws NotFoundHttpException if the model cannot be found
 	*/
 	public function actionDelete($idgruppo)
 	{
 		$model = $this->findModel($idgruppo);
+        /* Controllo se ci sono relazioni collegate ed emetto errore
+		if (count($model->notaopzione) > 0) {
+			Yii::$app->session->setFlash('success', 'Ci sono delle note collegate. Impossibile cancellare.');            
+    		return $this->redirect(['view','IdGruppo'=>$model->IdGruppo]);   
+        }*/		
 		if ( $model->delete()) {
 			Yii::$app->session->setFlash('success', 'Cancellazione effettuata correttamente.Chiudere la maschera.');
-			return $this->redirect(['create']);
+			return $this->render('/generics/view',[]);   
+			//return $this->redirect(['create']);
 		}			
 		return $this->redirect(['view','idgruppo'=>$model->idgruppo]);   
 	}
@@ -188,7 +193,7 @@ class ZgruppoController extends BaseController
 	/**
 	* Finds the zgruppo model based on its primary key value.
 	* If the model is not found, a 404 HTTP exception will be thrown.
-	* @param int $idgruppo Id 
+	* @param int $IdGruppo Id 
 	* @return zgruppo the loaded model
 	* @throws NotFoundHttpException if the model cannot be found
 	*/
@@ -209,10 +214,10 @@ class ZgruppoController extends BaseController
 	public function actionReloadrelazione($nomepdc, $nomerelaz, $idgruppo, $DaSingle = false)
 	{
 		$searchModel = new zgruppoSearch();
-if ($nomerelaz == "zgruppo_zpermessi" ) 
-				$dataProvider = $searchModel->searchZpermessi($this->request->queryParams, $idgruppo);
-		else if ($nomerelaz == "zgruppo_zutgr" ) 
+                if ($nomerelaz == "zgruppo_zutgr" ) 
 				$dataProvider = $searchModel->searchZutgr($this->request->queryParams, $idgruppo);
+		else if ($nomerelaz == "zgruppo_zpermessi" ) 
+				$dataProvider = $searchModel->searchZpermessi($this->request->queryParams, $idgruppo);
 
 		else {
 			return;
