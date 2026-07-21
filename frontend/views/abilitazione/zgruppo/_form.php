@@ -23,9 +23,9 @@ $this->params['home'] = Url::to(['/abilitazione/zgruppo/view','idgruppo'=>$model
 	]); ?>
 	
 	
-	<?= $form->field($model,'idgruppo')->hiddenInput() ?>	
+	<?= $form->field($model,'idgruppo')->hiddenInput()->label(false); ?>	
 		
-		<?= $form->field($model,'nomegruppo')->textInput() ?>
+        <?= $form->field($model,'nomegruppo')->textInput() ?>
 		
 	
 	<!--?= $form->field($model, 'imageFile')->fileInput() ?--> <!-- Scommentare per fare fileupload -->
