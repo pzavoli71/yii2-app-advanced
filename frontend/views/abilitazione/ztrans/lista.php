@@ -6,7 +6,7 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\web\View;
 
-$this->title = 'Elenco transazioni';
+$this->title = 'Lista transazioni';
 $this->registerJsFile(
     '@web/js/app.js',
     ['depends' => [\yii\web\JqueryAsset::class, \yii\jui\JuiAsset::class]]
@@ -71,6 +71,8 @@ function apriRigaRelazioni(chiave, nomepdc, riga, rigarel) {
 	var dati = {};
 	if ( nome == 'abilitazione\\ztrans') {
 		dati['idtrans'] = chiavi[0];
+	} else if (nome == 'zpermessi') {
+		dati['idpermessi'] = chiavi[0];
 
 	}
 	// Scommentare per fare il caricamento manuale ogni volta che si clicca sul + di questa relazione
@@ -115,6 +117,8 @@ function caricaRelazione(obj) {
 	}
 	if ( nome == 'abilitazione\\ztrans') {
 		dati['idtrans'] = chiavi[0];
+	} else if (nome == 'zpermessi') {
+		dati['idpermessi'] = chiavi[0];
 
 	}
 	<?php $currentcontroller = Yii::$app->controller->id; ?>
@@ -225,9 +229,9 @@ function comandoTerminato(nomecomando, chiave, data, href, callback) {
     <h4><?= Html::encode($thisobj->title) ?></h4>
     
     <!-- Maschera per la ricerca -->
-    <!--?= $thisobj->render('_search', [
+    <?= $thisobj->render('_search', [
 		'model' => $searchModel,
-    ]) ?-->
+    ]) ?>
 
     <p style="margin-bottom:0px; margin-top:5px">
 		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi|fa-plus', 'abilitazione/ztrans/create', [], 'Inserisci un nuovo elemento','document.location.reload(false)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
@@ -314,9 +318,9 @@ function Relazioniztrans($riga, $rigapos) { ?>
 		<div class="titolorelaz"><a class="refresh_btn cis-button btn_riga" href="javascript:void(0)" onclick="caricaRelazione(this)">
 			<i class="fa fa-sync"></i>
 		</a>
-		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un permesso|fa-plus', 'abilitazione/zpermessi/create', ['idtrans'=>$riga->idtrans], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
+		<?php echo frontend\controllers\BaseController::linkwin('Aggiungi un gruppo|fa-plus', 'abilitazione/zpermessi/create', [], 'Apri per inserimento','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		&#xA0;
-		<span class="titolo1">Gruppi</span>
+		<span class="titolo1">Gruppi collegati</span>
 		<div class="btn_minimax" title="Minimizza"><i class="fa fa-window-minimize"></i></div>
 		</div>
 		<?php Relazioneztrans_zpermessi($riga,$rigapos) ?>
@@ -350,10 +354,9 @@ function IntestaTabellazpermessi() { ?>
 <tr>
 <th style="min-width:180px"></th>
 
-     <th data-nomecol="Permesso" >Permesso</th>
+     <th data-nomecol="idpermessi" >idpermessi</th>
 
      <th data-nomecol="idgruppo" >idgruppo</th>
-
 
 </tr>
 <?php } ?>	
@@ -370,9 +373,9 @@ function Recordzpermessi($rigarel, $pos) { ?>
 			<?php echo frontend\controllers\BaseController::linkwin('Edit|fa-edit', 'abilitazione/zpermessi/view', ['idpermessi'=>$rigarel->idpermessi], 'Apri per modifica','caricaRelazione(this.atag)',['windowtitle'=>'Inserisci i parametri','windowwidth'=>'700']); ?>
 		</td>
 
-		<td><span class="headcol">Permesso:</span><?=$rigarel->permesso?></td>
+		<td><span class="headcol">idpermessi:</span><?=$rigarel->idpermessi?></td>
 
-		<td><span class="headcol">idgruppo:</span><?=$rigarel->idgruppo?><?=$rigarel->zgruppo->nomegruppo ?></td>
+		<td><span class="headcol">idgruppo:</span><?=$rigarel->idgruppo?><br/><?=$rigarel->zgruppo->nomegruppo ?></td>
 
 		<!--td class="tdbottoni"-->
 			<!--?= showToggleInrelations($rigarel,$pos,true) ?-->	
