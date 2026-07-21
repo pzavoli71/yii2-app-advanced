@@ -722,3 +722,371 @@ div.redactor-editor{
     resize:none;
     max-height:300px;
 }
+
+
+/* =====================================================================
+   THEME LAYER — restyling grafico (aggiunto senza toccare il layout
+   funzionale dei tab/iframe/gridview qui sopra). Regole solo estetiche:
+   colori, tipografia, ombre, raggi, transizioni.
+   ===================================================================== */
+
+:root {
+    --os-primary:      #3b5bdb;
+    --os-primary-dark: #2b3a8c;
+    --os-primary-600:  #364fc7;
+    --os-accent:       #12b886;   /* verde/teal per successo */
+    --os-accent-dark:  #0ca678;
+    --os-ink:          #2b2f38;
+    --os-muted:        #6b7280;
+    --os-surface:      #ffffff;
+    --os-bg:           #eef1f7;
+    --os-border:       #e3e7ef;
+    --os-radius:       .6rem;
+    --os-shadow-sm:    0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+    --os-shadow-md:    0 6px 18px rgba(16,24,40,.10);
+    --os-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+body {
+    font-family: var(--os-font);
+    color: var(--os-ink);
+    background: var(--os-bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* --- Navbar ---------------------------------------------------------- */
+header .navbar,
+.navbar.bg-dark {
+    background: linear-gradient(90deg, #24304f 0%, var(--os-primary-dark) 45%, var(--os-primary) 100%) !important;
+    box-shadow: 0 2px 10px rgba(16,24,40,.18);
+    border-bottom: 3px solid var(--os-accent);
+}
+.navbar .navbar-brand {
+    font-weight: 700;
+    letter-spacing: .2px;
+    color: #fff !important;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+.navbar .navbar-brand::before {
+    content: "\f19d"; /* fa-graduation-cap */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    color: var(--os-accent);
+    font-size: 1.05em;
+}
+.navbar .nav-link {
+    color: rgba(255,255,255,.82) !important;
+    font-weight: 500;
+    border-radius: .35rem;
+    transition: color .15s ease, background-color .15s ease;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link:focus,
+.navbar .nav-item.show > .nav-link {
+    color: #fff !important;
+    background-color: rgba(255,255,255,.12);
+}
+.navbar .dropdown-menu {
+    border: 1px solid var(--os-border);
+    border-radius: var(--os-radius);
+    box-shadow: var(--os-shadow-md);
+    padding: .35rem;
+    margin-top: .35rem;
+}
+.navbar .dropdown-item {
+    border-radius: .4rem;
+    padding: .5rem .8rem;
+    font-size: .93rem;
+}
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+    background-color: rgba(59,91,219,.10);
+    color: var(--os-primary-600);
+}
+.login {
+    color: rgba(255,255,255,.9);
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,.5);
+    border-radius: .4rem;
+    padding: .3rem .9rem !important;
+    transition: all .15s ease;
+}
+.login:hover {
+    color: var(--os-primary-dark);
+    background-color: #fff;
+    border-color: #fff;
+}
+.navbar form > button.logout {
+    color: rgba(255,255,255,.85);
+    font-weight: 500;
+}
+.navbar form > button.logout:hover,
+.navbar form > button.logout:focus {
+    color: #fff;
+}
+
+/* --- Barra dei tab --------------------------------------------------- */
+#tabs-header > ul {
+    gap: 2px;
+    border-bottom: 2px solid var(--os-primary);
+    padding: 0 2px;
+}
+.li-tab {
+    border: 1px solid var(--os-border);
+    border-bottom: none;
+    background: #dfe4ee;
+    color: #3b4252;
+    font-weight: 500;
+    font-size: .9rem;
+    padding: 7px 14px 6px;
+    border-top-left-radius: .55rem;
+    border-top-right-radius: .55rem;
+    transition: background-color .2s ease, color .2s ease;
+}
+.li-tab:hover {
+    background: #cfd6e6;
+    color: var(--os-primary-dark);
+}
+.li-tab.active {
+    background: var(--os-primary);
+    color: #fff;
+    border-color: var(--os-primary);
+    box-shadow: 0 -2px 8px rgba(59,91,219,.25);
+}
+.tab-chiudi {
+    color: inherit;
+    opacity: .65;
+    transition: opacity .15s ease, transform .15s ease;
+}
+.tab-chiudi:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+/* --- Pannello contenitore dei tab ----------------------------------- */
+.tabs-container {
+    border: 1px solid var(--os-border);
+    border-top: none;
+    border-radius: 0 0 var(--os-radius) var(--os-radius);
+    box-shadow: var(--os-shadow-md);
+    overflow: hidden;
+}
+
+/* --- Bottoni --------------------------------------------------------- */
+.btn {
+    border-radius: .45rem;
+    font-weight: 500;
+    transition: transform .12s ease, box-shadow .15s ease, background-color .15s ease, border-color .15s ease;
+}
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--os-shadow-sm);
+}
+.btn:active {
+    transform: translateY(0);
+}
+.btn-primary {
+    background-color: var(--os-primary);
+    border-color: var(--os-primary);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--os-primary-600);
+    border-color: var(--os-primary-600);
+}
+.btn-success {
+    background-color: var(--os-accent);
+    border-color: var(--os-accent);
+}
+.btn-success:hover,
+.btn-success:focus {
+    background-color: var(--os-accent-dark);
+    border-color: var(--os-accent-dark);
+}
+.btn-outline-secondary {
+    border-color: #c3cad6;
+    color: #4b5563;
+}
+.btn-outline-secondary:hover {
+    background-color: #4b5563;
+    border-color: #4b5563;
+}
+
+/* --- Form ------------------------------------------------------------ */
+.form-control,
+.form-select {
+    border-radius: .45rem;
+    border-color: #cfd6e2;
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--os-primary);
+    box-shadow: 0 0 0 .18rem rgba(59,91,219,.18);
+}
+.searchform fieldset {
+    border-radius: var(--os-radius);
+    border-color: var(--os-border);
+    background: #fafbfe;
+}
+
+/* --- GridView / tabelle (solo estetica desktop) ---------------------- */
+.grid-view table.table {
+    border-radius: var(--os-radius);
+    overflow: hidden;
+    box-shadow: var(--os-shadow-sm);
+}
+.grid-view table.table > thead th {
+    background: #2f3a56;
+    color: #fff;
+    border-color: #2f3a56;
+    font-weight: 600;
+}
+.grid-view table.table > tbody > tr:hover > td {
+    background-color: rgba(59,91,219,.06);
+}
+.tabLista th {
+    background: linear-gradient(180deg, #4b5674, #3b4256) !important;
+}
+
+/* --- Alert / breadcrumb --------------------------------------------- */
+.alert {
+    border: none;
+    border-left: 4px solid;
+    border-radius: var(--os-radius);
+    box-shadow: var(--os-shadow-sm);
+}
+.alert-success { border-left-color: var(--os-accent); }
+.alert-danger, .alert-error { border-left-color: #e03131; }
+.alert-warning { border-left-color: #f59f00; }
+.alert-info { border-left-color: var(--os-primary); }
+.breadcrumb {
+    background-color: #fff !important;
+    border: 1px solid var(--os-border);
+    box-shadow: var(--os-shadow-sm);
+}
+.breadcrumb-item.active { color: var(--os-primary-600); font-weight: 600; }
+
+/* --- Footer ---------------------------------------------------------- */
+.footer {
+    background: #fff !important;
+    border-top: 1px solid var(--os-border);
+    color: var(--os-muted);
+}
+
+/* =====================================================================
+   HOME — hero + card funzionalita' (view: site/home dentro l'iframe)
+   ===================================================================== */
+.os-home { padding: 0; }
+.os-hero {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(1200px 380px at 15% -10%, rgba(18,184,134,.28), transparent 60%),
+                linear-gradient(120deg, var(--os-primary-dark) 0%, var(--os-primary) 60%, #4c6ef5 100%);
+    color: #fff;
+    border-radius: var(--os-radius);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    box-shadow: var(--os-shadow-md);
+}
+.os-hero::after {
+    content: "";
+    position: absolute;
+    right: -60px; bottom: -80px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,.06);
+    border-radius: 50%;
+}
+.os-hero .os-eyebrow {
+    display: inline-block;
+    font-size: .8rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #d7f7ec;
+    background: rgba(255,255,255,.12);
+    padding: .3rem .8rem;
+    border-radius: 999px;
+    margin-bottom: 1rem;
+}
+.os-hero h1 {
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
+    font-weight: 800;
+    letter-spacing: -.5px;
+    margin: 0 0 .6rem;
+}
+.os-hero p.lead {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: rgba(255,255,255,.9);
+    max-width: 640px;
+    margin: 0 auto 1.6rem;
+}
+.os-hero .os-cta {
+    display: inline-flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.os-hero .btn-light {
+    font-weight: 600;
+    color: var(--os-primary-dark);
+    border-radius: .5rem;
+    padding: .6rem 1.4rem;
+}
+.os-hero .btn-ghost {
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.6);
+    border-radius: .5rem;
+    padding: .6rem 1.4rem;
+    font-weight: 600;
+}
+.os-hero .btn-ghost:hover { background: rgba(255,255,255,.14); color:#fff; }
+
+.os-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.1rem;
+    margin: 1.6rem 0 .5rem;
+}
+.os-feature-card {
+    background: var(--os-surface);
+    border: 1px solid var(--os-border);
+    border-radius: var(--os-radius);
+    padding: 1.4rem 1.3rem;
+    box-shadow: var(--os-shadow-sm);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.os-feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--os-shadow-md);
+    border-color: #cdd6ea;
+}
+.os-feature-icon {
+    width: 48px; height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: .7rem;
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: .9rem;
+    background: var(--os-primary);
+}
+.os-feature-card:nth-child(2) .os-feature-icon { background: var(--os-accent); }
+.os-feature-card:nth-child(3) .os-feature-icon { background: #f59f00; }
+.os-feature-card:nth-child(4) .os-feature-icon { background: #7048e8; }
+.os-feature-card h3 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin: 0 0 .4rem;
+    color: var(--os-ink);
+}
+.os-feature-card p {
+    color: var(--os-muted);
+    font-size: .92rem;
+    margin: 0;
+    line-height: 1.5;
+}
