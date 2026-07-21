@@ -26,7 +26,7 @@ class ztransSearch extends ztrans
 			[['idtrans'], 'integer'],
 			[[], 'boolean','trueValue'=>'-1'],
 			[['nometrans'],'string','max' => 200],
-			[[], 'safe'],
+			[['nometrans'], 'safe'],
         ];
     }	
 	
@@ -68,6 +68,9 @@ class ztransSearch extends ztrans
         $query->andFilterWhere([
             'idtrans'=>$this->idtrans
         ]);
+        $query->andFilterWhere(
+            ['like','nometrans',$this->nometrans]
+        );
         $query->orderBy("nometrans");
 
         /*$query->andFilterWhere(['like', 'DescObiettivo', $this->DescObiettivo])
