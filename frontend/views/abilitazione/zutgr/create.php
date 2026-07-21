@@ -5,9 +5,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\abilitazione\zutgr $model */
+/** @var common\models\abilitazione\zUtGr $model */
 
-$this->title = 'Associa utente a gruppo';
+$this->title = 'Collega un gruppo ad un utente';
 
 \yii\web\YiiAsset::register($this);
 ?>
