@@ -31,6 +31,7 @@ class zgruppo extends \common\models\BaseModel
     public function rules()
     {
         return [
+            ['idgruppo', 'integer'],
             [['ultagg'], 'safe'],
             [['nomegruppo'], 'string', 'max' => 200],
             [['utente'], 'string', 'max' => 45],
