@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\abilitazione\ztrans $model */
 
-$this->title = 'Crea una nuova transazione';
+$this->title = 'Aggiungi transazione';
 
 \yii\web\YiiAsset::register($this);
 ?>
