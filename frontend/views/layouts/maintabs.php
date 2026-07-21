@@ -91,7 +91,7 @@ $this->registerMetaTag(['name' => 'theme-color', 'content' => '#ffffff']);
             ['label' => 'Lista Occupazioni', 'url' => ['busy/tipooccupazione/index']],
             ['label' => 'Lista Argomenti', 'url' => ['busy/argomento/lista']],
             ['label' => 'Lista Tipo permessi', 'url' => ['busy/tipopermesso/lista']],
-            ['label' => 'Lista permessi', 'url' => ['abilitazione/zutgr/index']],
+            ['label' => 'Lista gruppi di utenti', 'url' => ['abilitazione/zgruppo/lista']],            		
             ['label' => 'Lista transazioni', 'url' => ['abilitazione/ztrans/lista']]
         ]],        
         
