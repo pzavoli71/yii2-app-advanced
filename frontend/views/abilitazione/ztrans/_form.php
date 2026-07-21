@@ -4,17 +4,12 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\datecontrol\DateControl;
-use pzavoli71\widgets\AutocompleteDropdown;
-use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var common\models\abilitazione\ztrans $model */
 /** @var yii\widgets\ActiveForm $form */
 
 ?>
-
-<?php $this->params['breadcrumbs'][] = $this->title; 
-$this->params['home'] = Url::to(['/abilitazione/ztrans/view','idtrans'=>$model->idtrans]);  ?>
 
 <div class="ztrans-form">
 
@@ -23,7 +18,7 @@ $this->params['home'] = Url::to(['/abilitazione/ztrans/view','idtrans'=>$model->
 	]); ?>
 	
 	
-	<?= $form->field($model,'idtrans')->hiddenInput() ?>	
+	<?= $form->field($model,'idtrans')->hiddenInput()->label(false) ?>	
 		
 		<?= $form->field($model,'nometrans')->textInput() ?>
 		
@@ -32,6 +27,9 @@ $this->params['home'] = Url::to(['/abilitazione/ztrans/view','idtrans'=>$model->
 	
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+		<?php if (!empty($model->idtrans)) { ?>
+        <?= Html::a('Annulla', Yii::$app->request->referrer, ['class' => 'btn btn-secondary']) ?>
+        <?php }?>
     </div>
 
     <?php ActiveForm::end(); ?>
