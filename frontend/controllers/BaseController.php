@@ -87,6 +87,9 @@ class BaseController  extends Controller{
             
             $trovato = false;
             $action_name = $this->id . '/' . $action->id;
+            if ( !empty($action->id) && str_contains($action->id,"reloadrelazione") ) {
+                $action_name = str_replace("reloadrelazione", "view", $action_name);
+            }            
             if ( empty($gruppi[$action_name])) {
                 throw new UserException("Non si hanno i permessi per accedere a questa funzione.");                
             }
