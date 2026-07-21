@@ -5,9 +5,9 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var common\models\abilitazione\zutgr . $model */
+/** @var common\models\abilitazione\zUtGr . $model */
 
-$this->title = 'Modifica utente per gruppo:' . $model->idutgr;
+$this->title = 'Modifica associazione gruppo transazione:' . $model->idutgr;
 
 \yii\web\YiiAsset::register($this);
 ?>
