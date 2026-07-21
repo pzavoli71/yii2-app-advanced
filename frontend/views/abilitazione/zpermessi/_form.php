@@ -23,10 +23,12 @@ $this->params['home'] = Url::to(['/abilitazione/zpermessi/view','idpermessi'=>$m
 	]); ?>
 	
 	
+	<?= $form->field($model,'idpermessi')->hiddenInput()->label(false) ?>	
+		
 	<?= $form->field($model,'idgruppo')->dropDownList(
 			$combo['zgruppo'],           // Flat array ('id'=>'label')
 			[
-				'prompt' => Yii::t('app','scegli gruppo')
+				'prompt' => Yii::t('app','scegli argomento')
 				//, Questo comando serve a caricare dinamicamente un secondo combo a partire dai valori del primo
 				//'onchange'=>'
 				//	href = "' . Yii::$app->urlManager->createUrl(["busy/obiettivo/reloadcombo","nomecombo"=>"TpOccup"]) . '";' .
@@ -36,14 +38,13 @@ $this->params['home'] = Url::to(['/abilitazione/zpermessi/view','idpermessi'=>$m
 				//	'$( "select#obiettivo-tpoccup" ).html( data ).focus()' .
 				//	'})'*/
 			]                
-	); ?>
-	
+	)->label('Gruppo'); ?>
 	
 
 	<?= $form->field($model,'idtrans')->dropDownList(
 			$combo['ztrans'],           // Flat array ('id'=>'label')
 			[
-				'prompt' => Yii::t('app','scegli transazione')
+				'prompt' => Yii::t('app','scegli argomento')
 				//, Questo comando serve a caricare dinamicamente un secondo combo a partire dai valori del primo
 				//'onchange'=>'
 				//	href = "' . Yii::$app->urlManager->createUrl(["busy/obiettivo/reloadcombo","nomecombo"=>"TpOccup"]) . '";' .
@@ -53,14 +54,9 @@ $this->params['home'] = Url::to(['/abilitazione/zpermessi/view','idpermessi'=>$m
 				//	'$( "select#obiettivo-tpoccup" ).html( data ).focus()' .
 				//	'})'*/
 			]                
-	); ?>
+	)->label('Transazione'); ?>
 	
 
-	<?= $form->field($model,'idpermessi')->hiddenInput()->label(false); ?>	
-		
-    <?= $form->field($model,'permesso')->textInput() ?>
-		
-	
 	<!--?= $form->field($model, 'imageFile')->fileInput() ?--> <!-- Scommentare per fare fileupload -->
 	
     <div class="form-group">
