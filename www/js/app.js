@@ -395,7 +395,7 @@ function AppGlob() {
                     autoOpen: true,
                     modal:false,
                     title:title,
-                    position:{ my: "center", at: "center", of: window} },
+                    position:{ my: "center", at: "center", of: window} ,
                             width: width,
                             show: {
                             effect: "blind",
