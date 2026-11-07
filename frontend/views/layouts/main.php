@@ -75,7 +75,7 @@ $this->registerJs("if ($.fn.button && $.fn.button.noConflict) {
         ['label' => 'Contact', 'url' => ['/site/contact'],'forall'=>'true'],
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup'],'forall'=>'true'];
     } else {
         $menuItems[] = ['label' => 'Modifica profilo', 'url' => ['/abilitazione/profilo/view','IdProfilo' => Yii::$app->user->identity->profilo->IdProfilo]];        
         $menuItems[] = ['label' => 'Utenti', 'url' => ['/user/lista']];        
