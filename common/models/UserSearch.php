@@ -40,7 +40,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find()->with('soggetto');
+        $query = User::find()->with('profilo');
 
         // add conditions that should always apply here
 
