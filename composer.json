@@ -10,6 +10,7 @@
         "source": "https://github.com/pzavoli71/sport"
     },
     "minimum-stability": "dev",
+	"prefer-stable": true,
     "require": {
         "php": ">=7.4.0",
         "yiisoft/yii2": "~2.0.45",
@@ -26,14 +27,15 @@
         "kartik-v/yii2-mpdf": "dev-master",
         "wolfcast/browser-detection":"*",
         "pzavoli71/cookieconsent":"*",
-        "alikdex/yii2-crawler-detect": "1.0"        
+        "alikdex/yii2-crawler-detect": "1.0",
+		"bower-asset/inputmask": "5.0.9"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
         "yiisoft/yii2-gii": "~2.2.0",
         "yiisoft/yii2-faker": "~2.0.0",
         "phpunit/phpunit": "^9.6.33",
-	"codeception/codeception": "^5.0",
+		"codeception/codeception": "^5.0",
     	"codeception/lib-innerbrowser": "^4.0 || ^3.0",
     	"codeception/module-asserts": "^3.0",
     	"codeception/module-yii2": "^1.1",
